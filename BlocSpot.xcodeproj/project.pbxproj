@@ -10,9 +10,7 @@
 		58A536701A9A99F500113151 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A5366F1A9A99F500113151 /* main.m */; };
 		58A536731A9A99F500113151 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A536721A9A99F500113151 /* AppDelegate.m */; };
 		58A536761A9A99F500113151 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A536751A9A99F500113151 /* ViewController.m */; };
-		58A536791A9A99F600113151 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58A536771A9A99F600113151 /* Main.storyboard */; };
 		58A5367B1A9A99F600113151 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58A5367A1A9A99F600113151 /* Images.xcassets */; };
-		58A5367E1A9A99F600113151 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58A5367C1A9A99F600113151 /* LaunchScreen.xib */; };
 		58A5368A1A9A99F600113151 /* BlocSpotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A536891A9A99F600113151 /* BlocSpotTests.m */; };
 /* End PBXBuildFile section */
 
@@ -34,9 +32,7 @@
 		58A536721A9A99F500113151 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		58A536741A9A99F500113151 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		58A536751A9A99F500113151 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		58A536781A9A99F600113151 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		58A5367A1A9A99F600113151 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		58A5367D1A9A99F600113151 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		58A536831A9A99F600113151 /* BlocSpotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocSpotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		58A536881A9A99F600113151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58A536891A9A99F600113151 /* BlocSpotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlocSpotTests.m; sourceTree = "<group>"; };
@@ -85,9 +81,7 @@
 				58A536721A9A99F500113151 /* AppDelegate.m */,
 				58A536741A9A99F500113151 /* ViewController.h */,
 				58A536751A9A99F500113151 /* ViewController.m */,
-				58A536771A9A99F600113151 /* Main.storyboard */,
 				58A5367A1A9A99F600113151 /* Images.xcassets */,
-				58A5367C1A9A99F600113151 /* LaunchScreen.xib */,
 				58A5366D1A9A99F500113151 /* Supporting Files */,
 			);
 			path = BlocSpot;
@@ -199,8 +193,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58A536791A9A99F600113151 /* Main.storyboard in Resources */,
-				58A5367E1A9A99F600113151 /* LaunchScreen.xib in Resources */,
 				58A5367B1A9A99F600113151 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -242,25 +234,6 @@
 			targetProxy = 58A536841A9A99F600113151 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		58A536771A9A99F600113151 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				58A536781A9A99F600113151 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		58A5367C1A9A99F600113151 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				58A5367D1A9A99F600113151 /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		58A5368B1A9A99F600113151 /* Debug */ = {
