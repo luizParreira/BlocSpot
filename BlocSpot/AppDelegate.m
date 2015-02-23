@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "BLCMapViewController.h"
 
 @interface AppDelegate ()
 
@@ -21,6 +22,11 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    BLCMapViewController *mapVC = [[BLCMapViewController alloc]init];
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mapVC];
+    self.window.rootViewController = self.navigationController;
+
     return YES;
 }
 

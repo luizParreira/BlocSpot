@@ -1,0 +1,16 @@
+PODS:
+  - FlatUIKit (1.6)
+  - Masonry (0.6.1)
+  - SVProgressHUD (HEAD based on 1.1.2)
+
+DEPENDENCIES:
+  - FlatUIKit
+  - Masonry
+  - SVProgressHUD (HEAD)
+
+SPEC CHECKSUMS:
+  FlatUIKit: 48b78e6d026c2f2c8a733425aaa5015c99ffc079
+  Masonry: 2cb49fd14d203d2db5ca6bb017135b235dde9980
+  SVProgressHUD: da7a49e789af645d9279ffbca62318945a832438
+
+COCOAPODS: 0.34.0
