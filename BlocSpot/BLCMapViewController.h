@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface BLCMapViewController : UIViewController
+@interface BLCMapViewController : UIViewController <CLLocationManagerDelegate>
+@property (nonatomic, strong) CLLocationManager *locationManager;
+
 
 @end

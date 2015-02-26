@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import "BLCMapViewController.h"
+#import "UIColor+FlatUI.h"
+
+
 
 @interface AppDelegate ()
 
@@ -20,12 +23,13 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor cloudsColor];
     [self.window makeKeyAndVisible];
     
     BLCMapViewController *mapVC = [[BLCMapViewController alloc]init];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:mapVC];
     self.window.rootViewController = self.navigationController;
+
 
     return YES;
 }
