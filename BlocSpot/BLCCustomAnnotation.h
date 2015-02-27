@@ -8,17 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import "BLCCustomCreateAnnotationsView.h"
+#import "BLCPointOfInterest.h"
+
 
 
 @interface BLCCustomAnnotation : NSObject <MKAnnotation>
+    
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
+- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 
-@property (nonatomic, strong) NSString *place;
-@property (nonatomic, strong) NSString *imageName;
-
-@property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
-
-+ (MKAnnotationView *)createViewAnnotationForMapView:(MKMapView *)mapView annotation:(id <MKAnnotation>)annotation;
 
 
 @end

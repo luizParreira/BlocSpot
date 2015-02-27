@@ -8,7 +8,14 @@
 
 #import "BLCDataSource.h"
 
-@implementation BLCDataSource
+
+@interface BLCDataSource ()
+
+
+
+@end
+
+@implementation BLCDataSource 
 
 
 
@@ -33,5 +40,7 @@
     return self;
     
 }
+
+
 
 @end

@@ -7,6 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
+
+
+
 typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
     PAPointOfInterestDidNotVisit  = 0,
     PAPointOfInterestDidVisit     = 1,
@@ -14,13 +19,15 @@ typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
 
 @interface BLCPointOfInterest : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSMutableArray *categoriesList;
+@property (nonatomic, strong) NSString *category;
 @property (nonatomic, strong) NSString *placeName;
 @property (nonatomic, strong) NSString *notes;
+@property (nonatomic, assign) CLLocation * location;
 
 
 @property (nonatomic, assign) PAPointOfInterestVisitedState visitState;
 
+-(instancetype) initWithDictionary:(NSDictionary *)mediaDictionary;
 
 
 

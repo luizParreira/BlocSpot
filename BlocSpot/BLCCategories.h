@@ -7,7 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface BLCCategories : NSObject
+@property (nonatomic, strong) NSString *categoryName;
+@property (nonatomic, strong) UIColor *color;
+@property (nonatomic, strong) UILabel *categoryLabel;
+
+-(instancetype)initWithName:(NSString*)categoryName withColor:(UIColor *)color;
+
+-(UILabel *)returnLabel;
 
 @end

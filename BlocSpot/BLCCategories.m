@@ -10,4 +10,15 @@
 
 @implementation BLCCategories
 
+
+-(instancetype)initWithName:(NSString *)categoryName withColor:(UIColor *)color {
+    if (self){
+        
+        self.categoryName = categoryName;
+        self.color = color;
+    }
+    
+    return self;
+}
+
 @end

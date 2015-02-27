@@ -1,5 +1,5 @@
 //
-//  BLCCustomAnnotationView.h
+//  BLCComposePlacesViewController.h
 //  BlocSpot
 //
 //  Created by luiz parreira on 2/26/15.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BLCCustomAnnotationView : UIView
-
-
+@interface BLCComposePlacesViewController : UIViewController
 
 @end

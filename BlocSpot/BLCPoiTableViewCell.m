@@ -7,8 +7,7 @@
 //
 
 #import "BLCPoiTableViewCell.h"
-#import <FlatUIKit/UIColor+FlatUI.h>
-#import "UIFont+FlatUI.h"
+#import "FlatUIKit.h"
 
 @interface  BLCPoiTableViewCell ()
 
@@ -272,17 +271,7 @@ static UIColor *standardLetterCollors;
 
 
 
-/*
--(void)setPointOfInterest:(BLCPointOfInterest *)pointOfInterest {
-    _pointOfInterest = pointOfInterest;
-    self.nameOfPlace.attributedText = [self placeNameString];
-    
-    self.notesAboutPlace.attributedText = [self notesAboutPlaceString];
-    self.howFarIsIt.attributedText = [self howFarIsItString];
 
-
-}
-*/
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

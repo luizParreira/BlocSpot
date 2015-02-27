@@ -13,9 +13,7 @@
 #import "BLCPointOfInterest.h"
 
 //UI stuff
-#import "UIColor+FlatUI.h"
-#import "UIFont+FlatUI.h"
-#import "UIBarButtonItem+FlatUI.h"
+#import "FlatUIKit.h"
 
 
 @interface BLCPoiTableViewController () <UISearchBarDelegate, UISearchControllerDelegate>

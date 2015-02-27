@@ -9,8 +9,21 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "BLCCustomCreateAnnotationsView.h"
+
+@class BLCMapViewController, BLCPointOfInterest;
+@protocol BLCMapViewControllerDelegate <NSObject>
+
+-(void) viewController:(BLCMapViewController *)viewController didLongPressOnMap:(MKMapView *)map;
+
+@end
 
 @interface BLCMapViewController : UIViewController <CLLocationManagerDelegate>
+
+@property (nonatomic, strong) BLCCustomCreateAnnotationsView *createAnnotationView;
+
+@property (nonatomic, weak) id <BLCMapViewControllerDelegate> delegate;
+
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
 

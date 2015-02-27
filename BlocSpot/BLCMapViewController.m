@@ -7,24 +7,30 @@
 //
 
 #import "BLCMapViewController.h"
+#import "BLCCustomAnnotation.h"
+#import "BLCCustomCreateAnnotationsView.h"
+#import "BLCComposePlacesViewController.h"
 
 #import "BLCPoiTableViewController.h"
 #import "BLCSearchViewController.h"
+#import "BLCDataSource.h"
+#import "BLCPointOfInterest.h"
+#import "FPPopoverController.h"
+#import "SMCalloutView.h"
 
 // UI stuff
-#import "UIBarButtonItem+FlatUI.h"
-#import "NSString+Icons.h"
-#import "UIFont+FlatUI.h"
-#import "UIColor+FlatUI.h"
-#import "UINavigationBar+FlatUI.h"
+#import "FlatUIKit.h"
+#import "UIPopoverController+FlatUI.h"
 
 
-@interface BLCMapViewController () <MKMapViewDelegate, UIViewControllerTransitioningDelegate,UISearchBarDelegate, UISearchControllerDelegate, UITabBarControllerDelegate, UIGestureRecognizerDelegate>
+@interface BLCMapViewController () <MKMapViewDelegate, UIViewControllerTransitioningDelegate,UISearchBarDelegate, UISearchControllerDelegate, UITabBarControllerDelegate, UIGestureRecognizerDelegate, BLCCustomCreateAnnotationsViewDelegate, FPPopoverControllerDelegate >
 
 @property (nonatomic, strong) MKMapView *mapView;
 
 @property (nonatomic, strong) BLCPoiTableViewController *tablePoiVC;
 @property (nonatomic, strong) BLCSearchViewController *searchVC;
+@property (nonatomic, strong) BLCCustomCreateAnnotationsView  *createView;
+
 @property (nonatomic, strong) NSMutableArray *matchingItems;
 
 
@@ -43,14 +49,27 @@
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 
+@property (nonatomic, strong) BLCPointOfInterest *poi;
+
+
+@property (nonatomic, strong) NSMutableDictionary *params;
+
+
+@property (nonatomic, assign) CLLocationCoordinate2D coords;
+@property (nonatomic, strong) MKAnnotationView *annotationView;
+
+
+@property (nonatomic, assign)CGPoint point;
 
 @end
+static NSString *viewId = @"HeartAnnotation";
 
 @implementation BLCMapViewController
 
 -(instancetype)init {
     self = [super init];
     if (self) {
+
     }
     return self;
 }
@@ -67,20 +86,13 @@
     [self.view addSubview:self.mapView ];
     self.mapView.showsUserLocation = YES;
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
-    //[self gettingLocation];
-    
-    self.locationManager=[[CLLocationManager alloc] init];
-    self.locationManager.delegate=self;
-    self.locationManager.desiredAccuracy=kCLLocationAccuracyNearestTenMeters;
-    [self.locationManager requestWhenInUseAuthorization];
-    [self.locationManager startUpdatingLocation];
 
     
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
     self.tapGesture.delegate = self;
     self.tapGesture.numberOfTapsRequired = 1;
     
-    self.longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressFired:)];
+    self.longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(addAnnotation:)];
     self.longPress.delegate = self;
     [self.view addGestureRecognizer:self.longPress];
     
@@ -98,14 +110,16 @@
     [self.view addSubview:theImageView];
     [self.view addSubview:doneImageView];
     */
-    
+    [self updateLocation];
     
     [self createConstraints];
     [self createTabBarButtons];
     [self createListViewBarButton];
     [self setUpSearchBar];
-     self.searchVC = [[BLCSearchViewController alloc]init];
     
+    self.createAnnotationView = [[BLCCustomCreateAnnotationsView alloc]init];
+    self.annotationView = (MKAnnotationView*)
+    [self.mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
 }
 - (void)setUpSearchBar {
     self.searchBar = [[UISearchBar alloc] init];
@@ -113,12 +127,6 @@
     _searchBar.delegate = self;
 }
 
--(void)gettingLocation {
-    self.locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
-    [_locationManager startUpdatingLocation];
-
-}
 
 
 
@@ -151,6 +159,36 @@
                                    cornerRadius:3];
 
 }
+
+#pragma Location delegate methods call
+
+- (CLLocationManager *)locationManager {
+    if (!_locationManager) {
+        self.locationManager=[[CLLocationManager alloc] init];
+        self.locationManager.delegate=self;
+        
+        self.locationManager.desiredAccuracy=kCLLocationAccuracyNearestTenMeters;
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    return _locationManager;
+}
+
+-(void)updateLocation {
+    [self.locationManager startUpdatingLocation];
+
+}
+
+-(void)fetchVenuesForLocation:(CLLocation *)location {
+    
+}
+
+-(void)zoomToLocation:(CLLocation *)location radius:(CGFloat)radius {
+    
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location.coordinate, radius*2, radius*2);
+    [self.mapView setRegion:region];
+    
+}
+
 
 -(NSAttributedString *)titleLabelString  {
     
@@ -205,6 +243,8 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.locationManager = nil;
+
 }
 
 
@@ -214,6 +254,24 @@
     
      
      
+}
+#pragma BLCCustomAnnotationsViewDelegate
+
+-(void)customView:(BLCCustomCreateAnnotationsView *)view
+didPressDoneButton:(FUIButton *)button
+    withTitleText:(NSString *)titleText
+withDescriptionText:(NSString *)descriptionText
+          withTag:(NSString *)tag
+{
+    
+    self.params = [NSDictionary mutableCopy];
+    
+    [self.params setObject:titleText forKey:@"place"];
+    [self.params setObject:descriptionText forKey:@"description"];
+    [self.params setObject:tag forKey:@"category"];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coords.latitude longitude:self.coords.longitude];
+    [self.params setObject:location forKey:@"location"];
+    NSLog(@"%@", self.params);
 }
 
 #pragma mark tap gesture recognizer
@@ -226,16 +284,22 @@
     self.navigationItem.rightBarButtonItems =@[_filterButton, _searchButton];
 }
 
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    return self.isEditing == NO;
+
+-(void) addAnnotation: (UILongPressGestureRecognizer *)sender {
+    
+    if (sender.state == UIGestureRecognizerStateBegan){
+    
+    self.point = [sender locationInView:self.mapView];
+    self.coords = [self.mapView convertPoint:self.point toCoordinateFromView:self.mapView];
+
+    
+    self.poi = [[BLCPointOfInterest alloc] initWithDictionary:self.params];
+    BLCCustomAnnotation *customAnnotation = [[BLCCustomAnnotation alloc]initWithCoordinate:self.coords];
+    
+    [self.mapView addAnnotation:customAnnotation];
+    }
 }
 
--(void) longPressFired: (UILongPressGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        
-    }
-    
-}
 
 #pragma mark UITabBar button actions
 -(void)searchButtonPressed:(id)sender{
@@ -247,8 +311,8 @@
                         options:kNilOptions
                      animations:^{
                     _searchBar.alpha = 1.0;
-                    // remove other buttons
 
+                         
                     self.navigationItem.rightBarButtonItems = nil;
                     self.navigationItem.leftBarButtonItems = nil;
                     self.navigationItem.titleView = _searchBar;
@@ -258,7 +322,6 @@
         
     } completion:^(BOOL finished) {
         
-        // add the search bar (which will start out hidden).
 
 
     }];
@@ -325,10 +388,50 @@
     
     [mapV setRegion:region animated:TRUE];
 }
+*/
 
--(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    NSLog(@"error: %@", error.description);
+    // this part is boilerplate code used to create or reuse a pin annotation
+    _annotationView = [[MKAnnotationView alloc]
+                          initWithAnnotation:annotation reuseIdentifier:viewId];
+    
+    // set your custom image
+    _annotationView.image = [UIImage imageNamed:@"heart"];
+    return _annotationView;
 }
- */
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    
+    //SMCalloutView *callOutView = [[SMCalloutView alloc] init];
+    BLCComposePlacesViewController *composePlacesVC = [[BLCComposePlacesViewController alloc]init];
+    //callOutView.contentView = composePlacesVC.view;
+    //[callOutView presentCalloutFromRect:self.view.frame inView:mapView constrainedToView:mapView permittedArrowDirections:SMCalloutArrowDirectionUp animated:YES];
+    
+    FPPopoverController *popover = [[FPPopoverController alloc] initWithViewController:composePlacesVC ];
+    popover.delegate = self;
+    popover.border = NO;
+    popover.arrowDirection = FPPopoverArrowDirectionIsVertical(FPPopoverArrowDirectionUp);
+    popover.origin = view.frame.origin;
+    //[popover setShadowsHidden:YES];
+    [popover presentPopoverFromPoint:view.frame.origin];
+    
+
+}
+
+-(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    
+    view.image = [UIImage imageNamed:@"heart"];
+    
+}
+#pragma mark CLLocationManagerDelegate Methods
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation *location = [locations lastObject];
+    [self fetchVenuesForLocation:location];
+    [self zoomToLocation:location radius:2000];
+    [self.locationManager stopUpdatingLocation];
+
+}
+
 @end

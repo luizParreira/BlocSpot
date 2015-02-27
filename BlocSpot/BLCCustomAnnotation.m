@@ -10,20 +10,19 @@
 
 @implementation BLCCustomAnnotation
 
-/*
-+ (MKAnnotationView *)createViewAnnotationForMapView:(MKMapView *)mapView annotation:(id <MKAnnotation>)annotation
+
+
+
+-(id)initWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-    MKAnnotationView *returnedAnnotationView =
-    (CustomAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:NSStringFromClass([CustomAnnotation class])];
-    if (returnedAnnotationView == nil)
-    {
-        returnedAnnotationView =
-        [[CustomAnnotationView alloc] initWithAnnotation:annotation
-                                         reuseIdentifier:NSStringFromClass([CustomAnnotation class])];
+    self = [super init];
+    if (self) {
+        self.coordinate = coordinate;
     }
-    
-    return returnedAnnotationView;
+    return self;
 }
 
-*/
+
+
+
 @end
