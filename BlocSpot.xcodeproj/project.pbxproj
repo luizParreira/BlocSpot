@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5811643B1AA2577200D2D596 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */; };
 		582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582724CC1AA1042A0073BE00 /* SMCalloutView.m */; };
 		5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */; };
 		5830C0A31A9F808C00E41895 /* TLTagsControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A21A9F808C00E41895 /* TLTagsControl.m */; };
@@ -32,6 +33,9 @@
 		58F417511A9CF7A70087ED2A /* BLCPoiTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F417501A9CF7A70087ED2A /* BLCPoiTableViewController.m */; };
 		58F417541A9CF8050087ED2A /* BLCPointOfInterest.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F417531A9CF8050087ED2A /* BLCPointOfInterest.m */; };
 		58F417571A9CF9B70087ED2A /* BLCPoiTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F417561A9CF9B70087ED2A /* BLCPoiTableViewCell.m */; };
+		58FE8D2E1AA371AB007E54DC /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FE8D291AA371AB007E54DC /* JVFloatLabeledTextField.m */; };
+		58FE8D2F1AA371AB007E54DC /* JVFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FE8D2B1AA371AB007E54DC /* JVFloatLabeledTextView.m */; };
+		58FE8D301AA371AB007E54DC /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FE8D2D1AA371AB007E54DC /* NSString+TextDirectionality.m */; };
 		67D9556A40F41E77028181AE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 819E0E68B4988EEEF413E0AB /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		581164391AA2577200D2D596 /* CustomIOS7AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOS7AlertView.h; sourceTree = "<group>"; };
+		5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 		582724CB1AA1042A0073BE00 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
 		582724CC1AA1042A0073BE00 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
 		5830C09B1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCreateAnnotationsView.h; sourceTree = "<group>"; };
@@ -93,6 +99,12 @@
 		58F417531A9CF8050087ED2A /* BLCPointOfInterest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCPointOfInterest.m; sourceTree = "<group>"; };
 		58F417551A9CF9B70087ED2A /* BLCPoiTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCPoiTableViewCell.h; sourceTree = "<group>"; };
 		58F417561A9CF9B70087ED2A /* BLCPoiTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCPoiTableViewCell.m; sourceTree = "<group>"; };
+		58FE8D281AA371AB007E54DC /* JVFloatLabeledTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextField.h; sourceTree = "<group>"; };
+		58FE8D291AA371AB007E54DC /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextField.m; sourceTree = "<group>"; };
+		58FE8D2A1AA371AB007E54DC /* JVFloatLabeledTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextView.h; sourceTree = "<group>"; };
+		58FE8D2B1AA371AB007E54DC /* JVFloatLabeledTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextView.m; sourceTree = "<group>"; };
+		58FE8D2C1AA371AB007E54DC /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
+		58FE8D2D1AA371AB007E54DC /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		62047AC823055443B093042C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		73074BBEE2F22E0E403BF78B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		819E0E68B4988EEEF413E0AB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +261,14 @@
 				5830C0A91A9FB4FC00E41895 /* FPTouchView.m */,
 				582724CB1AA1042A0073BE00 /* SMCalloutView.h */,
 				582724CC1AA1042A0073BE00 /* SMCalloutView.m */,
+				581164391AA2577200D2D596 /* CustomIOS7AlertView.h */,
+				5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */,
+				58FE8D281AA371AB007E54DC /* JVFloatLabeledTextField.h */,
+				58FE8D291AA371AB007E54DC /* JVFloatLabeledTextField.m */,
+				58FE8D2A1AA371AB007E54DC /* JVFloatLabeledTextView.h */,
+				58FE8D2B1AA371AB007E54DC /* JVFloatLabeledTextView.m */,
+				58FE8D2C1AA371AB007E54DC /* NSString+TextDirectionality.h */,
+				58FE8D2D1AA371AB007E54DC /* NSString+TextDirectionality.m */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -429,13 +449,17 @@
 				58F417511A9CF7A70087ED2A /* BLCPoiTableViewController.m in Sources */,
 				5830C0AA1A9FB4FC00E41895 /* FPTouchView.m in Sources */,
 				5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */,
+				5811643B1AA2577200D2D596 /* CustomIOS7AlertView.m in Sources */,
 				5830C0AD1A9FB50B00E41895 /* FPPopoverView.m in Sources */,
+				58FE8D2E1AA371AB007E54DC /* JVFloatLabeledTextField.m in Sources */,
+				58FE8D2F1AA371AB007E54DC /* JVFloatLabeledTextView.m in Sources */,
 				582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */,
 				5830C0B01A9FB84100E41895 /* BLCComposePlacesViewController.m in Sources */,
 				5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */,
 				58A536731A9A99F500113151 /* AppDelegate.m in Sources */,
 				58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */,
 				58F417571A9CF9B70087ED2A /* BLCPoiTableViewCell.m in Sources */,
+				58FE8D301AA371AB007E54DC /* NSString+TextDirectionality.m in Sources */,
 				585E4FF31A9BC4E800E60C32 /* BLCDataSource.m in Sources */,
 				58F417541A9CF8050087ED2A /* BLCPointOfInterest.m in Sources */,
 				58A536701A9A99F500113151 /* main.m in Sources */,

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "BLCCustomAnnotation.h"
 
 
 
@@ -23,6 +24,8 @@ typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
 @property (nonatomic, strong) NSString *placeName;
 @property (nonatomic, strong) NSString *notes;
 @property (nonatomic, assign) CLLocation * location;
+@property (nonatomic, strong) BLCCustomAnnotation *customAnnotation;
+
 
 
 @property (nonatomic, assign) PAPointOfInterestVisitedState visitState;

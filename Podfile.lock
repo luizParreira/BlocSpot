@@ -1,16 +1,19 @@
 PODS:
   - FlatUIKit (1.6)
-  - Masonry (0.6.1)
+  - IQKeyboardManager (3.2.1.1)
   - SVProgressHUD (HEAD based on 1.1.2)
+  - WYPopoverController (0.2.2)
 
 DEPENDENCIES:
   - FlatUIKit
-  - Masonry
+  - IQKeyboardManager
   - SVProgressHUD (HEAD)
+  - WYPopoverController (~> 0.2.2)
 
 SPEC CHECKSUMS:
   FlatUIKit: 48b78e6d026c2f2c8a733425aaa5015c99ffc079
-  Masonry: 2cb49fd14d203d2db5ca6bb017135b235dde9980
+  IQKeyboardManager: 4e83eef847c6f5edbd670284e50c7e3d643ebdb5
   SVProgressHUD: da7a49e789af645d9279ffbca62318945a832438
+  WYPopoverController: c233d69fdfd5c7e316b481df1060624d7a9e629d
 
 COCOAPODS: 0.34.0

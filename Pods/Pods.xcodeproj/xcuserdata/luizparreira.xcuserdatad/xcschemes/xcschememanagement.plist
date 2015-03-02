@@ -9,12 +9,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Masonry.xcscheme</key>
+		<key>Pods-IQKeyboardManager.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-SVProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-WYPopoverController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>6992309A957D94F497495858</key>
+		<key>0718DFD7114DB40517452DE6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7799E7EA6861020F662EED59</key>
+		<key>071A6FDB46366F711A5B53CF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A8509C87B7C5D8FB55DF6548</key>
+		<key>34768A25EF05A45D311FA9A2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F64CC4F80C3B5365537DDFD7</key>
+		<key>81716E5895EF17744CB3ED58</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E9E000F3C9785F747ED4F0BC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

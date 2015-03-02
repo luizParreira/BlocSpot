@@ -36,6 +36,10 @@
 
 @end
 
+static UIFont *headLineFont;
+
+static UIFont *bodyFont;
+static UIFont *captionFont;
 
 static UIFont *lightFont;
 static UIFont *normalFont;
@@ -50,7 +54,9 @@ static UIColor *standardLetterCollors;
 
 
 + (void) load {
+
     lightFont =[UIFont lightFlatFontOfSize:11];
+
     normalFont =[UIFont flatFontOfSize:11];
     boldFont = [UIFont boldFlatFontOfSize:11];
     //lightFont = [UIFont fontWithName:@"HelveticaNeue-Thin" size:11];
@@ -90,7 +96,6 @@ static UIColor *standardLetterCollors;
     self.nameOfPlace .numberOfLines  =0;
     [self.contentView addSubview: self.nameOfPlace ];
     self.nameOfPlace.translatesAutoresizingMaskIntoConstraints = NO;
-    
     self.nameOfPlace.attributedText = [self placeNameString];
 
 }
@@ -143,8 +148,9 @@ static UIColor *standardLetterCollors;
     CGFloat placeNameFontSize = 18;
     
     NSString *baseString = @"Picanha Grill Sao Paulo";
-    
-    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[normalFont fontWithSize:placeNameFontSize]}];
+
+
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]}];
     NSRange stringRange = [baseString rangeOfString:baseString];
     [mutAttString addAttribute:NSForegroundColorAttributeName value:standardLetterCollors range:stringRange];
     return mutAttString;
@@ -158,7 +164,7 @@ static UIColor *standardLetterCollors;
     
     NSString *baseString = @"pretty cool place  apparently Mr Fulano told that I should come and check out, maybe let me know when I am around";
     
-    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[lightFont fontWithSize:notesPlaceFontSize]}];
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
     NSRange stringRange = [baseString rangeOfString:baseString];
     [mutAttString addAttribute:NSForegroundColorAttributeName value:standardLetterCollors range:stringRange];
     
@@ -172,7 +178,7 @@ static UIColor *standardLetterCollors;
     
     NSString *baseString = @"< 1 min.";
     
-    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[lightFont fontWithSize:fontSize]}];
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] }];
     NSRange stringRange = [baseString rangeOfString:baseString];
     [mutAttString addAttribute:NSForegroundColorAttributeName value:standardLetterCollors range:stringRange];
     

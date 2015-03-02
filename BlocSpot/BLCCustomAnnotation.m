@@ -12,7 +12,6 @@
 
 
 
-
 -(id)initWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
     self = [super init];

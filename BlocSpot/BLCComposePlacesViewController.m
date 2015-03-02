@@ -9,8 +9,11 @@
 #import "BLCComposePlacesViewController.h"
 #import "BLCCustomCreateAnnotationsView.h"
 
+
 @interface BLCComposePlacesViewController ()
 @property (nonatomic, strong) BLCCustomCreateAnnotationsView *createAnnotations;
+@property (nonatomic, strong) UINavigationController *navController;
+
 @end
 
 @implementation BLCComposePlacesViewController
@@ -20,8 +23,10 @@
     // Do any additional setup after loading the view.
     self.createAnnotations = [[BLCCustomCreateAnnotationsView alloc] init];
     _createAnnotations.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.userInteractionEnabled =YES;
     [self.view addSubview:_createAnnotations];
+
+    
+    
     [self createConstraints];
     
     

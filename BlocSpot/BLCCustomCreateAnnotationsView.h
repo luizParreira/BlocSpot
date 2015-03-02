@@ -15,6 +15,7 @@
 #import "BLCPointOfInterest.h"
 
 
+
 @class BLCCustomCreateAnnotationsView ;
 @protocol BLCCustomCreateAnnotationsViewDelegate <NSObject>
 
@@ -28,8 +29,6 @@
 
 @property (nonatomic, strong) BLCPointOfInterest *POI;
 
-@property (nonatomic, strong) FUITextField *titleField;
-@property (nonatomic, strong) UITextView *descriptionTextView;
 @property (nonatomic, strong) UIView *tagView;
 
 @property (nonatomic, strong) NSMutableArray *colorsArray;
