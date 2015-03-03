@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "BLCCustomAnnotation.h"
+#import "BLCCategories.h"
 
 
 
@@ -20,7 +21,7 @@ typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
 
 @interface BLCPointOfInterest : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSString *category;
+@property (nonatomic, strong) BLCCategories *category;
 @property (nonatomic, strong) NSString *placeName;
 @property (nonatomic, strong) NSString *notes;
 @property (nonatomic, assign) CLLocation * location;

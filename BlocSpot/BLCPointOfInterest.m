@@ -16,10 +16,12 @@
     if (self) {
         // Use this space to parse the point data by using a dictionary
         
-        self.placeName = pointDictionary[@"place"];
-        self.notes = pointDictionary[@"description"];
-        self.category = pointDictionary[@"category"];
+        self.placeName = pointDictionary[@"placeName"];
+        self.notes = pointDictionary[@"notes"];
+        //self.category = pointDictionary[@"category"];
         self.customAnnotation = pointDictionary[@"annotation"];
+        
+        NSLog(@"pointDictionary =%@", pointDictionary);
     }
     return self;
     
@@ -28,14 +30,14 @@
 #pragma mark NSCoding
 
 
--(instancetype) initWithCoder:(NSCoder *)aDecoder {
+-(id) initWithCoder:(NSCoder *)aDecoder {
     
     self = [super init];
     if (self) {
         self.placeName = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(placeName))];
-        self.notes = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(description))];
-        self.category = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(category))];
-        self.customAnnotation = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(annotation))];
+        self.notes = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(notes))];
+        //self.category = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(category))];
+        self.customAnnotation = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(customAnnotation))];
     
     }
     return self;
@@ -43,9 +45,9 @@
 
 -(void) encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.placeName forKey:NSStringFromSelector(@selector(placeName))];
-    [aCoder encodeObject:self.notes forKey:NSStringFromSelector(@selector(description))];
-    [aCoder encodeObject:self.category forKey:NSStringFromSelector(@selector(category))];
-    [aCoder encodeObject:self.customAnnotation forKey:NSStringFromSelector(@selector(annotation))];
+    [aCoder encodeObject:self.notes forKey:NSStringFromSelector(@selector(notes))];
+    //[aCoder encodeObject:self.category forKey:NSStringFromSelector(@selector(category))];
+    [aCoder encodeObject:self.customAnnotation forKey:NSStringFromSelector(@selector(customAnnotation))];
 }
 
 @end

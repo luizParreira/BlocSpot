@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "BLCCustomCreateAnnotationsView.h"
+#import "BLCDataSource.h"
 
 @class BLCMapViewController, BLCPointOfInterest;
 @protocol BLCMapViewControllerDelegate <NSObject>
@@ -24,7 +25,10 @@
 
 @property (nonatomic, weak) id <BLCMapViewControllerDelegate> delegate;
 
+@property (nonatomic, strong) BLCDataSource *dataSource;
+
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
+@property (nonatomic, strong) NSArray *diskArray;
 
 @end

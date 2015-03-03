@@ -12,12 +12,16 @@
 
 
 
-@interface BLCCustomAnnotation : NSObject <MKAnnotation>
+@interface BLCCustomAnnotation : NSObject <MKAnnotation, NSCoding>
     
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+@property (nonatomic, strong) NSArray *array;
+@property (nonatomic, assign) CGFloat latitude;
+@property (nonatomic, assign) CGFloat longitude;
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 
+-(id)initWithArray:(NSArray *)array;
 
 
 @end

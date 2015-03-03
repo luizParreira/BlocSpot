@@ -15,7 +15,6 @@
 
 #import "BLCPoiTableViewController.h"
 #import "BLCSearchViewController.h"
-#import "BLCDataSource.h"
 #import "BLCPointOfInterest.h"
 #import "FPPopoverController.h"
 #import "SMCalloutView.h"
@@ -96,6 +95,7 @@ static NSString *viewId = @"HeartAnnotation";
     self.mapView.userInteractionEnabled =YES;
     [self.mapView setDelegate:self];
     [self.view addSubview:self.mapView ];
+//    [self loadAnnotations];
     self.mapView.showsUserLocation = YES;
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -134,19 +134,23 @@ static NSString *viewId = @"HeartAnnotation";
 
     
     
-    self.annotationView = (MKAnnotationView*)
-    [self.mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
-//    self.composePlacesVC = [[BLCComposePlacesViewController alloc]init];
+  //    self.composePlacesVC = [[BLCComposePlacesViewController alloc]init];
 //    self.popOver = [[WYPopoverController alloc]initWithContentViewController:_composePlacesVC];
 //    self.popOver.delegate = self;
     
     //View that will create a new POI
+    
     self.createAnnotationView = [[BLCCustomCreateAnnotationsView alloc]init];
+    self.createAnnotationView.delegate = self;
     self.state = BLCMapViewControllerStateMapContent;
 
     
+    self.params = [NSMutableDictionary new];
+    NSLog(@"params = %@", self.params);
 
 }
+
+
 - (void)setUpSearchBar {
     self.searchBar = [[UISearchBar alloc] init];
     _searchBar.showsCancelButton = YES;
@@ -167,6 +171,7 @@ static NSString *viewId = @"HeartAnnotation";
         case BLCMapViewControllerStateMapContent: {
             
             [self.createAnnotationView setHidden:YES];
+            [self.createAnnotationView resignFirstResponder];
             self.mapView.scrollEnabled = YES;
 
         } break;
@@ -265,6 +270,19 @@ static NSString *viewId = @"HeartAnnotation";
                                    cornerRadius:3];
 
 }
+
+
+#pragma mark load previously created annotations
+
+//-(void)loadAnnotations {
+//    
+//    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations) {
+//        [self.mapView addAnnotation:poi.customAnnotation];
+//        
+//        
+//    }
+//}
+
 
 #pragma mark - Overrides
 
@@ -388,7 +406,7 @@ static NSString *viewId = @"HeartAnnotation";
      
      
 }
-#pragma BLCCustomAnnotationsViewDelegate
+#pragma mark BLCCustomAnnotationsViewDelegate
 
 -(void)customView:(BLCCustomCreateAnnotationsView *)view
 didPressDoneButton:(FUIButton *)button
@@ -396,13 +414,17 @@ didPressDoneButton:(FUIButton *)button
 withDescriptionText:(NSString *)descriptionText
           withTag:(NSString *)tag
 {
-    [self.createAnnotationView resignFirstResponder];
-    self.params = [NSDictionary mutableCopy];
     
-    [self.params setObject:titleText forKey:@"place"];
-    [self.params setObject:descriptionText forKey:@"description"];
-    [self.params setObject:tag forKey:@"category"];
-    NSLog(@"params = %@", self.params);
+    
+    [self.params setObject:titleText forKey:@"placeName"];
+    [self.params setObject:descriptionText forKey:@"notes"];
+    [self setState:BLCMapViewControllerStateMapContent animated:YES];
+    self.poi = [[BLCPointOfInterest alloc] initWithDictionary:self.params];
+
+    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi];
+    [self.mapView  reloadInputViews];
+    
+    //[self.params setObject: forKey:@"category"];
 }
 
 #pragma mark tap gesture recognizer
@@ -421,23 +443,26 @@ withDescriptionText:(NSString *)descriptionText
 -(void) addAnnotation: (UILongPressGestureRecognizer *)sender
 {
     
+    
+    
     if (sender.state == UIGestureRecognizerStateBegan) {
         [self setState:BLCMapViewControllerStateAddPoi animated:YES];
     
         self.point = [sender locationInView:self.mapView];
         self.coords = [self.mapView convertPoint:self.point toCoordinateFromView:self.mapView];
-        
+        CLLocation *location = [[CLLocation alloc]initWithLatitude:self.coords.latitude longitude:self.coords.longitude];
+        [self zoomToLocation:location radius:2000];
         self.customAnnotation = [[BLCCustomAnnotation alloc]initWithCoordinate:_coords];
         [self.params setObject:self.customAnnotation forKey:@"annotation"];
-        
-        self.poi = [[BLCPointOfInterest alloc] initWithDictionary:self.params];
-        
-        [self.mapView addAnnotation:self.poi.customAnnotation];
+        [self.mapView addAnnotation:self.customAnnotation];
         
     }
 }
 
-
+-(void)setPoi:(BLCPointOfInterest *)poi{
+    _poi = poi;
+    poi = [[BLCPointOfInterest alloc]initWithDictionary:self.params];
+}
 #pragma mark UITabBar button actions
 -(void)searchButtonPressed:(id)sender{
     
@@ -448,8 +473,6 @@ withDescriptionText:(NSString *)descriptionText
                         options:kNilOptions
                      animations:^{
                     _searchBar.alpha = 1.0;
-
-                         
                     self.navigationItem.rightBarButtonItems = nil;
                     self.navigationItem.leftBarButtonItems = nil;
                     self.navigationItem.titleView = _searchBar;
@@ -509,7 +532,7 @@ withDescriptionText:(NSString *)descriptionText
     
 }
 
-#pragma mark MapViewDelegate
+#pragma mark MKMapViewDelegate
 /*
 -(void)mapView:(MKMapView *)mapV didUpdateUserLocation:(MKUserLocation *)userLocation
 {
@@ -533,17 +556,46 @@ withDescriptionText:(NSString *)descriptionText
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    // this part is boilerplate code used to create or reuse a pin annotation
-    _annotationView = [[MKAnnotationView alloc]
-                          initWithAnnotation:annotation reuseIdentifier:viewId];
-    
-    // set your custom image
-    _annotationView.image = [UIImage imageNamed:@"heart"];
-    return _annotationView;
+
+    MKAnnotationView *pinView = nil;
+    if(annotation != mapView.userLocation)
+    {
+        //static NSString *defaultPinID = @"com.invasivecode.pin";
+        pinView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
+        if ( pinView == nil )
+            pinView = [[MKAnnotationView alloc]
+                       initWithAnnotation:annotation reuseIdentifier:viewId];
+        
+        //pinView.pinColor = MKPinAnnotationColorGreen;
+       // pinView.canShowCallout = YES;
+        //pinView.animatesDrop = YES;
+        pinView.image = [UIImage imageNamed:@"heart"];    //as suggested by Squatch
+    }
+    else {
+        [mapView.userLocation setTitle:@"I am here"];
+    }
+    return pinView;
 }
 
+-(void)mapViewWillStartRenderingMap:(MKMapView *)mapView
+{
+    _mapView = mapView;
+  //  NSMutableArray *tempArray = [NSMutableArray array];
+    
+        for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
+        {
+            CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(poi.customAnnotation.latitude, poi.customAnnotation.longitude);
+            BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc]initWithCoordinate:coord];
+           // [tempArray addObject:poi.customAnnotation];
+            [mapView addAnnotation:annotation];
+
+        }
+    
+       // [mapView addAnnotations:tempArray];
+}
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
+    //TO DO - Method to implement the view of the custom annotationView
     
     //SMCalloutView *callOutView = [[SMCalloutView alloc] init];
     //callOutView.contentView = composePlacesVC.view;
@@ -581,5 +633,8 @@ withDescriptionText:(NSString *)descriptionText
     [self.locationManager stopUpdatingLocation];
 
 }
+
+
+
 
 @end

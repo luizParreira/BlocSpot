@@ -11,11 +11,11 @@
 @implementation BLCCategories
 
 
--(instancetype)initWithName:(NSString *)categoryName withColor:(UIColor *)color {
+-(instancetype)initWithDictionary:(NSDictionary *)categoryDictionary{
     if (self){
         
-        self.categoryName = categoryName;
-        self.color = color;
+        self.categoryName = categoryDictionary[@"categoryName"];
+        self.color = categoryDictionary[@"categoryColor"];
     }
     
     return self;

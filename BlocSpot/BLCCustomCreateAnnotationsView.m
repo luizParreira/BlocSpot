@@ -395,7 +395,7 @@ UIColor *floatingLabelColor ;
            didPressDoneButton:self.doneButton
                 withTitleText:self.titleField.text
           withDescriptionText:self.descriptionTextView.text
-                      withTag:[self.tagsControl.tags lastObject]];
+                      withTag:nil];
 }
 
 #pragma mark UITapGestureRecognizer action
