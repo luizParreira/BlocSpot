@@ -8,11 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-@interface BLCCategories : NSObject
+typedef NS_ENUM(NSInteger, BLCCategoriesState) {
+    BLCCategoriesUnselectedState,
+    BLCCategoriesSelectedState
+};
+@interface BLCCategories : NSObject <NSCoding>
 @property (nonatomic, strong) NSString *categoryName;
 @property (nonatomic, strong) UIColor *color;
 @property (nonatomic, strong) UILabel *categoryLabel;
+@property (nonatomic, assign) BLCCategoriesState state;
+@property (nonatomic, strong) NSArray *selectedCategory;
+@property (nonatomic, strong) NSMutableArray *pointsOfInterest;
+@property (nonatomic, strong) NSMutableArray *colorList;
+
 
 -(instancetype)initWithDictionary:(NSDictionary *)categoryDictionary;
 

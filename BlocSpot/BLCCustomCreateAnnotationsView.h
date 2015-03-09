@@ -13,17 +13,22 @@
 #import "TLTagsControl.h"
 #import "BLCCategories.h"
 #import "BLCPointOfInterest.h"
+#import "BLCDataSource.h"
 
 
 
-@class BLCCustomCreateAnnotationsView ;
+@class BLCCustomCreateAnnotationsView, BLCCategories ;
 @protocol BLCCustomCreateAnnotationsViewDelegate <NSObject>
 
--(void) customView:(BLCCustomCreateAnnotationsView *)view didPressDoneButton:(FUIButton *)button withTitleText:(NSString *)titleText withDescriptionText:(NSString *)descriptionText withTag:(NSString *)tag;
+-(void) customView:(BLCCustomCreateAnnotationsView *)view didPressDoneButton:(FUIButton *)button withTitleText:(NSString *)titleText withDescriptionText:(NSString *)descriptionText /*withCategory:(BLCCategories *)category*/;
+-(void)customViewDidPressAddCategoriesView:(BLCCustomCreateAnnotationsView *)categoryView;
+-(BLCCategories *)categoryChosen;
+
+
 
 @end
 
-@interface BLCCustomCreateAnnotationsView : UIView
+@interface BLCCustomCreateAnnotationsView : UIView <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) id <BLCCustomCreateAnnotationsViewDelegate> delegate;
 
@@ -38,6 +43,11 @@
 @property (nonatomic, strong) FUIButton *doneButton;
 @property (nonatomic, strong) BLCCategories *category;
 @property (nonatomic, strong) TLTagsControl *tagsControl;
+@property (nonatomic, strong) UIView *categoryView;
+
+@property (nonatomic, strong) FUIButton *categoryButton;
+@property (nonatomic, strong) UILabel *titleLabel;
 
 
+-(NSAttributedString *)titleLabelStringWithCategory:(NSString *)categoryString withColor:(UIColor *)color;
 @end

@@ -27,6 +27,8 @@ typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
 @property (nonatomic, assign) CLLocation * location;
 @property (nonatomic, strong) BLCCustomAnnotation *customAnnotation;
 
+//@property (nonatomic, strong) NSMutableArray *categoriesCreatedArray;
+
 
 
 @property (nonatomic, assign) PAPointOfInterestVisitedState visitState;

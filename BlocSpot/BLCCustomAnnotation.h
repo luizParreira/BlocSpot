@@ -18,8 +18,10 @@
 @property (nonatomic, strong) NSArray *array;
 @property (nonatomic, assign) CGFloat latitude;
 @property (nonatomic, assign) CGFloat longitude;
+//@property (nonatomic, strong) UIColor *backgroundColor;
 
-- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
+
+- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate ;
 
 -(id)initWithArray:(NSArray *)array;
 

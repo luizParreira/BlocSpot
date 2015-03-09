@@ -9,7 +9,6 @@
 #import "BLCMapViewController.h"
 #import "BLCCustomAnnotation.h"
 #import "BLCCustomCreateAnnotationsView.h"
-#import "BLCComposePlacesViewController.h"
 #import "CustomIOS7AlertView.h"
 
 
@@ -21,6 +20,8 @@
 
 #import "WYPopoverController.h"
 
+#import "BLCCategoriesTableViewController.h"
+
 // UI stuff
 #import "FlatUIKit.h"
 #import "UIPopoverController+FlatUI.h"
@@ -31,12 +32,17 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 };
 
 
-@interface BLCMapViewController () <MKMapViewDelegate, UIViewControllerTransitioningDelegate,UISearchBarDelegate, UISearchControllerDelegate, UITabBarControllerDelegate, UIGestureRecognizerDelegate, BLCCustomCreateAnnotationsViewDelegate, FPPopoverControllerDelegate, UIPopoverControllerDelegate, WYPopoverControllerDelegate >
+@interface BLCMapViewController () <MKMapViewDelegate, UIViewControllerTransitioningDelegate,UISearchBarDelegate, UISearchControllerDelegate, UITabBarControllerDelegate, UIGestureRecognizerDelegate, FPPopoverControllerDelegate, UIPopoverControllerDelegate, WYPopoverControllerDelegate, BLCCustomCreateAnnotationsViewDelegate, BLCCategoriesTableViewControllerDelegate  >
 
 @property (nonatomic, strong) MKMapView *mapView;
 
 @property (nonatomic, strong) BLCPoiTableViewController *tablePoiVC;
 @property (nonatomic, strong) BLCSearchViewController *searchVC;
+
+@property (nonatomic, strong) BLCCategoriesTableViewController *categoryVC;
+@property (nonatomic, strong) BLCCategoriesTableViewController *categoryVCpopup;
+
+@property (nonatomic, strong) WYPopoverController *popover;
 
 @property (nonatomic, strong) BLCCustomAnnotation *customAnnotation;
 @property (nonatomic, strong) NSMutableArray *matchingItems;
@@ -58,6 +64,8 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 
 @property (nonatomic, strong) BLCPointOfInterest *poi;
+@property (nonatomic, strong) BLCCategories *category;
+
 
 
 @property (nonatomic, strong) NSMutableDictionary *params;
@@ -70,6 +78,16 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 @property (nonatomic, assign)CGPoint point;
 
 @property (nonatomic, assign) BLCMapViewControllerState state;
+
+@property (nonatomic, strong)UINavigationController *navVC;
+
+@property (nonatomic, strong) UIColor *pinColor;
+
+@property (nonatomic, strong) UIImageView *heartImageView;
+
+
+
+
 
 
 @end
@@ -104,50 +122,62 @@ static NSString *viewId = @"HeartAnnotation";
     self.tapGesture.delegate = self;
     self.tapGesture.numberOfTapsRequired = 1;
     
-    self.longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(addAnnotation:)];
+    self.longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(createAnnotation:)];
     self.longPress.delegate = self;
     self.longPress.minimumPressDuration = 0.5;
     [self.mapView addGestureRecognizer:self.longPress];
     
     [self.mapView addGestureRecognizer:self.tapGesture];
     
-    // Code to change an icons color
-    /*
-    UIImage *image =[UIImage imageNamed:@"heart"];
-    UIImageView *theImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 100, 44, 44)];
-    theImageView.image = image;4
-    theImageView.image = [theImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [theImageView setTintColor:[UIColor redColor]];
-    UIImage *doneImage =[UIImage imageNamed:@"done-white"];
-    UIImageView *doneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(24, 100, 36, 36)];
-    doneImageView.image = doneImage;
-    [self.view addSubview:theImageView];
-    [self.view addSubview:doneImageView];
-    */
-    
+
     [self updateLocation];
     [self createConstraints];
 
     [self createTabBarButtons];
     [self createListViewBarButton];
     [self setUpSearchBar];
+    if(!_categoryVC){
+    self.categoryVC = [[BLCCategoriesTableViewController alloc]init];
+        self.categoryVC.delegate = self;
+    }
+    
+    if(!_categoryVCpopup){
+        self.categoryVCpopup = [[BLCCategoriesTableViewController alloc]init];
+        self.categoryVCpopup.delegate = self;
+    }
+    self.navVC = [[UINavigationController alloc]initWithRootViewController:self.categoryVC];
+    UINavigationController *navVCPopup =[[UINavigationController alloc]initWithRootViewController:self.categoryVCpopup];
+    UIBarButtonItem *leftBarButtonPopup = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                  target:self
+                                                                                  action:@selector(popupBarButtonItemDonePressed:)];
+    self.categoryVCpopup.navigationItem.leftBarButtonItem = leftBarButtonPopup;
 
-    
-    
-  //    self.composePlacesVC = [[BLCComposePlacesViewController alloc]init];
-//    self.popOver = [[WYPopoverController alloc]initWithContentViewController:_composePlacesVC];
-//    self.popOver.delegate = self;
-    
+    if (!_popover){
+    self.popover = [[WYPopoverController alloc]initWithContentViewController:navVCPopup];
+    self.popover.delegate = self;
+    self.popover.popoverContentSize = CGSizeMake(self.popover.contentViewController.view.frame.size.width, 44*7 + 20);
+        
+
+        
+    }
+    _annotationView =[self.mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
+
+
     //View that will create a new POI
-    
+    if (!_createAnnotationView) {
     self.createAnnotationView = [[BLCCustomCreateAnnotationsView alloc]init];
     self.createAnnotationView.delegate = self;
-    self.state = BLCMapViewControllerStateMapContent;
-
     
-    self.params = [NSMutableDictionary new];
-    NSLog(@"params = %@", self.params);
-
+    }
+    if (!_category){
+        self.category = [[BLCCategories alloc]init];
+    }
+    
+    
+    self.state = BLCMapViewControllerStateMapContent;
+    if(!self.params){
+        self.params = [NSMutableDictionary new];
+    }
 }
 
 
@@ -159,11 +189,7 @@ static NSString *viewId = @"HeartAnnotation";
 
 
 -(void)layoutViews {
-    CGFloat padding = 10;
 
-    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
-    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
-    CGFloat yOffset = 0.f;
     
     
     
@@ -173,33 +199,33 @@ static NSString *viewId = @"HeartAnnotation";
             [self.createAnnotationView setHidden:YES];
             [self.createAnnotationView resignFirstResponder];
             self.mapView.scrollEnabled = YES;
+            [self.navigationController.navigationBar setHidden:NO];
+
 
         } break;
         case BLCMapViewControllerStateAddPoi: {
-        
+            [self.createAnnotationView removeGestureRecognizer:self.tapGesture];
             [self.mapView addSubview:self.createAnnotationView];
             self.createAnnotationView.translatesAutoresizingMaskIntoConstraints = NO;
-            NSLog(@"viewHeight = %f", viewHeight );
             [self.createAnnotationView setHidden:NO];
             self.mapView.scrollEnabled = NO;
             [self setLayoutOfCreateAnnotationView];
-    
+            [self.navigationController.navigationBar setHidden:YES];
+
             
-            yOffset = 70.f;
         } break;
-            
     }
 
 
 }
 
-// Hide tab bar when lanscape mode
+// Hide tab bar when both landscape andmode
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     if (self.state == BLCMapViewControllerStateAddPoi) {
         if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)){
             [self.navigationController.navigationBar setHidden:YES];
         }   else{
-            [self.navigationController.navigationBar setHidden:NO];
+            [self.navigationController.navigationBar setHidden:YES];
         }
     }
     
@@ -242,6 +268,44 @@ static NSString *viewId = @"HeartAnnotation";
     [self.mapView addConstraint:viewWidthConstraint];
 }
 
+-(void) setLayoutCategoriesVC
+{
+    [self.mapView addConstraints:({
+        @[ [NSLayoutConstraint
+            constraintWithItem:_categoryVC
+            attribute:NSLayoutAttributeCenterX
+            relatedBy:NSLayoutRelationEqual
+            toItem:self.mapView
+            attribute:NSLayoutAttributeCenterX
+            multiplier:1.f constant:0.f],
+           
+           [NSLayoutConstraint
+            constraintWithItem:_categoryVC
+            attribute:NSLayoutAttributeCenterY
+            relatedBy:NSLayoutRelationEqual
+            toItem:self.mapView
+            attribute:NSLayoutAttributeCenterY
+            multiplier:1.f constant:0] ];
+    })];
+    NSLayoutConstraint *viewHeightConstraint = [NSLayoutConstraint constraintWithItem:_categoryVC
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:(44*4)+ 100];
+    [self.mapView addConstraint:viewHeightConstraint ];
+    NSLayoutConstraint *viewWidthConstraint = [NSLayoutConstraint constraintWithItem:_categoryVC
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1.0
+                                                                            constant:CGRectGetWidth(self.view.bounds)- 20];
+    [self.mapView addConstraint:viewWidthConstraint];
+}
+
+
 -(void)createListViewBarButton {
     UILabel *label = [[UILabel alloc]init];
     label.attributedText = [self titleLabelString];
@@ -272,16 +336,7 @@ static NSString *viewId = @"HeartAnnotation";
 }
 
 
-#pragma mark load previously created annotations
 
-//-(void)loadAnnotations {
-//    
-//    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations) {
-//        [self.mapView addAnnotation:poi.customAnnotation];
-//        
-//        
-//    }
-//}
 
 
 #pragma mark - Overrides
@@ -321,6 +376,8 @@ static NSString *viewId = @"HeartAnnotation";
 
 }
 
+
+// TO DO
 -(void)fetchVenuesForLocation:(CLLocation *)location {
     
 }
@@ -332,7 +389,7 @@ static NSString *viewId = @"HeartAnnotation";
     
 }
 
-
+#pragma mark Attributed String
 -(NSAttributedString *)titleLabelString  {
     
     NSString *baseString = @"BlocSpot Map";
@@ -343,6 +400,7 @@ static NSString *viewId = @"HeartAnnotation";
     
 }
 
+#pragma mark creat TabBar buttons
 -(void) createTabBarButtons {
     UIImage *searchImage =[UIImage imageNamed:@"search"];
 
@@ -399,34 +457,91 @@ static NSString *viewId = @"HeartAnnotation";
 }
 
 
--(void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
 
-    
-     
-     
-}
+
 #pragma mark BLCCustomAnnotationsViewDelegate
 
 -(void)customView:(BLCCustomCreateAnnotationsView *)view
 didPressDoneButton:(FUIButton *)button
     withTitleText:(NSString *)titleText
 withDescriptionText:(NSString *)descriptionText
-          withTag:(NSString *)tag
+//withCategory:(BLCCategories *)category
 {
     
     
     [self.params setObject:titleText forKey:@"placeName"];
     [self.params setObject:descriptionText forKey:@"notes"];
-    [self setState:BLCMapViewControllerStateMapContent animated:YES];
+    
+//    NSLog(@"self.params before initializing POI [%@]", self.params);
+    
     self.poi = [[BLCPointOfInterest alloc] initWithDictionary:self.params];
-
     [[BLCDataSource sharedInstance] addPointOfInterest:self.poi];
+
+    self.customAnnotation = [[BLCCustomAnnotation alloc]initWithCoordinate:_coords];
+    [self.params setObject:self.customAnnotation forKey:@"annotation"];
+    [self setState:BLCMapViewControllerStateMapContent animated:YES];
+    [self.mapView addAnnotation:self.customAnnotation ];
+    
+
     [self.mapView  reloadInputViews];
     
-    //[self.params setObject: forKey:@"category"];
+    // set the title lablel of the custom view back to its real title
+    self.createAnnotationView.titleLabel.attributedText = [self titleLabelString];
+    BLCCategories *category = self.params[@"category"];
+    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi toCategoryArray:category];
+    
 }
 
+-(void)customViewDidPressAddCategoriesView:(UIView *)categoryView
+{
+    NSLog(@"tap being fired DELEGATE");
+    self.comingFromAddAnnotationState  =YES;
+
+
+    [UIView animateWithDuration:1
+                          delay:0
+         usingSpringWithDamping:.75
+          initialSpringVelocity:10
+                        options:kNilOptions
+                     animations:^{
+                         
+                         [self.navigationController presentViewController:self.navVC animated:NO completion:nil];
+                        
+                         
+                         //
+                     } completion:^(BOOL finished) {
+                         
+                         
+                         
+                     }];
+}
+
+#pragma mark BLCCategoriesViewControllerDelegate
+
+-(void)controllerDidDismiss:(BLCCategoriesTableViewController *)controller
+{
+
+    [self.navVC dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+
+-(void)category:(BLCCategories *)categories  {
+    
+
+    [self.params setObject:categories forKey:@"category"];
+    self.pinColor = [[UIColor alloc]init];
+    self.pinColor = categories.color;
+    self.createAnnotationView.titleLabel.attributedText = [self.createAnnotationView titleLabelStringWithCategory:categories.categoryName withColor:categories.color];
+
+}
+
+-(void)didCompleteWithImageView:(UIImageView *)image {
+    self.heartImageView = [[UIImageView alloc]init];
+    _heartImageView.image = image.image;
+    
+
+}
 #pragma mark tap gesture recognizer
 
 -(void)tapFired:(UITapGestureRecognizer *)sender
@@ -440,9 +555,8 @@ withDescriptionText:(NSString *)descriptionText
 }
 
 
--(void) addAnnotation: (UILongPressGestureRecognizer *)sender
+-(void) createAnnotation: (UILongPressGestureRecognizer *)sender
 {
-    
     
     
     if (sender.state == UIGestureRecognizerStateBegan) {
@@ -450,21 +564,17 @@ withDescriptionText:(NSString *)descriptionText
     
         self.point = [sender locationInView:self.mapView];
         self.coords = [self.mapView convertPoint:self.point toCoordinateFromView:self.mapView];
-        CLLocation *location = [[CLLocation alloc]initWithLatitude:self.coords.latitude longitude:self.coords.longitude];
-        [self zoomToLocation:location radius:2000];
-        self.customAnnotation = [[BLCCustomAnnotation alloc]initWithCoordinate:_coords];
-        [self.params setObject:self.customAnnotation forKey:@"annotation"];
-        [self.mapView addAnnotation:self.customAnnotation];
+
+//        self.customAnnotation = [[BLCCustomAnnotation alloc]initWithCoordinate:_coords ];
+//        [self.params setObject:self.customAnnotation forKey:@"annotation"];
         
     }
 }
 
--(void)setPoi:(BLCPointOfInterest *)poi{
-    _poi = poi;
-    poi = [[BLCPointOfInterest alloc]initWithDictionary:self.params];
-}
 #pragma mark UITabBar button actions
--(void)searchButtonPressed:(id)sender{
+
+-(void)searchButtonPressed:(id)sender
+{
     
     [UIView animateWithDuration:1
                           delay:0
@@ -486,11 +596,8 @@ withDescriptionText:(NSString *)descriptionText
 
     }];
 }
-
-
-
-
--(void)listViewPressed:(id)sender{
+-(void)listViewPressed:(id)sender
+{
     CATransition *transition = [CATransition animation];
     transition.duration = 0.45;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
@@ -504,10 +611,32 @@ withDescriptionText:(NSString *)descriptionText
     [self.navigationController pushViewController:self.tablePoiVC animated:NO];
 
 }
--(void)filterButtonPressed:(id)sender {
-    
-}
+-(void)filterButtonPressed:(id)sender
+{
 
+
+    [UIView animateWithDuration:1
+                          delay:0
+         usingSpringWithDamping:.75
+          initialSpringVelocity:10
+                        options:kNilOptions
+                     animations:^{
+                         [self.navVC.navigationItem.leftBarButtonItem setEnabled:NO];
+                    [_popover presentPopoverFromBarButtonItem:self.filterButton
+                                    permittedArrowDirections:WYPopoverArrowDirectionDown
+                                                    animated:NO];
+                         
+//
+                     } completion:^(BOOL finished) {
+                         
+                         
+                         
+                     }];
+}
+-(void)popupBarButtonItemDonePressed:(id)sender
+{
+    [self.popover dismissPopoverAnimated:YES];
+}
 
 #pragma mark UISearchBarDelegate methods
 
@@ -532,50 +661,51 @@ withDescriptionText:(NSString *)descriptionText
     
 }
 
-#pragma mark MKMapViewDelegate
-/*
--(void)mapView:(MKMapView *)mapV didUpdateUserLocation:(MKUserLocation *)userLocation
+
+-(UIImageView *)returnImageColored
 {
-    NSLog(@"map new location: %f %f", userLocation.coordinate.latitude, userLocation.coordinate.longitude);
-    CLLocationCoordinate2D location = userLocation.coordinate;
+    UIImage *image = [UIImage imageNamed:@"heart"];
+    UIImageView *imageView = [[UIImageView alloc]init];
+    imageView.image = image;
+    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [imageView setTintColor:[UIColor yellowColor]];
+    return imageView;
     
-    MKCoordinateRegion region;
-    region.center = location;
-    MKCoordinateSpan span;
-    span.latitudeDelta=0.1;
-    span.longitudeDelta=0.1;
-    region.span=span;
-    te
-    [mapV setRegion:region animated:TRUE];
 }
-*/
-//
-//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-//    MKAnnotationView* newAnnotation = [views firstObject];
-//}
+
+#pragma mark MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
 
-    MKAnnotationView *pinView = nil;
-    if(annotation != mapView.userLocation)
+    if(annotation != mapView.userLocation && [annotation isKindOfClass:[BLCCustomAnnotation class]])
+
     {
         //static NSString *defaultPinID = @"com.invasivecode.pin";
-        pinView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
-        if ( pinView == nil )
-            pinView = [[MKAnnotationView alloc]
-                       initWithAnnotation:annotation reuseIdentifier:viewId];
+//        pinView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
         
-        //pinView.pinColor = MKPinAnnotationColorGreen;
-       // pinView.canShowCallout = YES;
-        //pinView.animatesDrop = YES;
-        pinView.image = [UIImage imageNamed:@"heart"];    //as suggested by Squatch
-    }
+        _annotationView = [[MKAnnotationView alloc]
+                       initWithAnnotation:annotation reuseIdentifier:viewId];
+        _annotationView.canShowCallout = NO;
+        _annotationView.image = _heartImageView.image;
+//        [_annotationView setTintColor:[UIColor redColor]];
+        _annotationView.annotation = self.customAnnotation;
+
+//        _annotationView.tintColor = [UIColor yellowColor];
+//        _annotationView.backgroundColor = [UIColor clearColor];
+        [_annotationView addSubview:[self returnImageColored]];
+        _annotationView.image = [self returnImageColored].image;
+        }
+//        [pinView setTintColor:_customAnnotation.backgroundColor];
+    
     else {
         [mapView.userLocation setTitle:@"I am here"];
     }
-    return pinView;
+    return _annotationView;
+    
+    
 }
+
 
 -(void)mapViewWillStartRenderingMap:(MKMapView *)mapView
 {
@@ -584,42 +714,33 @@ withDescriptionText:(NSString *)descriptionText
     
         for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
         {
+//                [self.pinView setTintColor:poi.category.color];
+                
             CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(poi.customAnnotation.latitude, poi.customAnnotation.longitude);
             BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc]initWithCoordinate:coord];
+//                UIImageView *tempImageView = [[UIImageView alloc]init];
+//            tempImageView.image = [tempImageView.image imageWithRenderingMode:  UIImageRenderingModeAlwaysTemplate];
+//                
+//            [tempImageView setTintColor:poi.category.color];
            // [tempArray addObject:poi.customAnnotation];
-            [mapView addAnnotation:annotation];
+//                MKAnnotationView *view = [MKAnnotationView]
+            _annotationView = [[MKAnnotationView alloc]
+                               initWithAnnotation:annotation reuseIdentifier:viewId];
+ 
+            [_annotationView setTintColor:poi.category.color];
+                [mapView addAnnotation:annotation];
+            
+            
 
         }
     
        // [mapView addAnnotations:tempArray];
 }
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     //TO DO - Method to implement the view of the custom annotationView
-    
-    //SMCalloutView *callOutView = [[SMCalloutView alloc] init];
-    //callOutView.contentView = composePlacesVC.view;
-    //[callOutView presentCalloutFromRect:self.view.frame inView:mapView constrainedToView:mapView permittedArrowDirections:SMCalloutArrowDirectionUp animated:YES];
-//    self.popOver.popoverContentSize = self.composePlacesVC.view.bounds.size;
-//    
-//    [self.popOver presentPopoverFromRect:view.frame
-//                                  inView:mapView
-//                permittedArrowDirections:WYPopoverArrowDirectionAny
-//                                animated:YES
-//                                 options:WYPopoverAnimationOptionScale
-//                              completion:nil];
 
-    
-    //   EXTERNAL LIBRARY POPOVER
-//    FPPopoverController *popover = [[FPPopoverController alloc] initWithViewController:composePlacesVC ];
-//    popover.delegate = self;
-//    popover.border = NO;
-//    popover.arrowDirection = FPPopoverArrowDirectionIsVertical(FPPopoverArrowDirectionUp);
-//    popover.origin = view.frame.origin;
-//    //[popover setShadowsHidden:YES];
-//    [popover presentPopoverFromPoint:view.frame.origin];
-    
-    
     
     
 

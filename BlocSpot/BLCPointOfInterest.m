@@ -18,9 +18,9 @@
         
         self.placeName = pointDictionary[@"placeName"];
         self.notes = pointDictionary[@"notes"];
-        //self.category = pointDictionary[@"category"];
+        self.category = pointDictionary[@"category"];
         self.customAnnotation = pointDictionary[@"annotation"];
-        
+//        self.categoriesCreatedArray = pointDictionary[@"categoriesCreatedArray"];
         NSLog(@"pointDictionary =%@", pointDictionary);
     }
     return self;
@@ -36,8 +36,9 @@
     if (self) {
         self.placeName = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(placeName))];
         self.notes = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(notes))];
-        //self.category = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(category))];
+        self.category = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(category))];
         self.customAnnotation = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(customAnnotation))];
+//        self.categoriesCreatedArray = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(categoriesCreatedArray))];
     
     }
     return self;
@@ -46,8 +47,9 @@
 -(void) encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.placeName forKey:NSStringFromSelector(@selector(placeName))];
     [aCoder encodeObject:self.notes forKey:NSStringFromSelector(@selector(notes))];
-    //[aCoder encodeObject:self.category forKey:NSStringFromSelector(@selector(category))];
+    [aCoder encodeObject:self.category forKey:NSStringFromSelector(@selector(category))];
     [aCoder encodeObject:self.customAnnotation forKey:NSStringFromSelector(@selector(customAnnotation))];
+//    [aCoder encodeObject:self.categoriesCreatedArray forKey:NSStringFromSelector(@selector(categoriesCreatedArray))];
 }
 
 @end

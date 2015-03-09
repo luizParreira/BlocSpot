@@ -9,15 +9,17 @@
 /* Begin PBXBuildFile section */
 		5811643B1AA2577200D2D596 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */; };
 		582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582724CC1AA1042A0073BE00 /* SMCalloutView.m */; };
+		582D39CE1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */; };
+		582D39D11AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 582D39D01AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m */; };
 		5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */; };
 		5830C0A31A9F808C00E41895 /* TLTagsControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A21A9F808C00E41895 /* TLTagsControl.m */; };
 		5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A51A9FB45100E41895 /* FPPopoverController.m */; };
 		5830C0AA1A9FB4FC00E41895 /* FPTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A91A9FB4FC00E41895 /* FPTouchView.m */; };
 		5830C0AD1A9FB50B00E41895 /* FPPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0AC1A9FB50B00E41895 /* FPPopoverView.m */; };
-		5830C0B01A9FB84100E41895 /* BLCComposePlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0AF1A9FB84100E41895 /* BLCComposePlacesViewController.m */; };
 		585E4FF31A9BC4E800E60C32 /* BLCDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 585E4FF21A9BC4E800E60C32 /* BLCDataSource.m */; };
+		585F0F941AA7B61900FADFD6 /* BLCColorsCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585F0F931AA7B61900FADFD6 /* BLCColorsCollectionCell.m */; };
 		5889BA871A9ECCBD00B97A27 /* BLCCustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5889BA861A9ECCBD00B97A27 /* BLCCustomAnnotation.m */; };
-		5889BA8A1A9ECD5800B97A27 /* BLCCustomAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5889BA891A9ECD5800B97A27 /* BLCCustomAnnotationView.m */; };
+		5891B7E11AAD3D43005D4046 /* BLCCustomCallOutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5891B7E01AAD3D43005D4046 /* BLCCustomCallOutView.m */; };
 		58A536701A9A99F500113151 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A5366F1A9A99F500113151 /* main.m */; };
 		58A536731A9A99F500113151 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A536721A9A99F500113151 /* AppDelegate.m */; };
 		58A5367B1A9A99F600113151 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58A5367A1A9A99F600113151 /* Images.xcassets */; };
@@ -54,6 +56,10 @@
 		5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 		582724CB1AA1042A0073BE00 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
 		582724CC1AA1042A0073BE00 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
+		582D39CC1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategoriesTableViewController.h; sourceTree = "<group>"; };
+		582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategoriesTableViewController.m; sourceTree = "<group>"; };
+		582D39CF1AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategoryTaleViewCell.h; sourceTree = "<group>"; };
+		582D39D01AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategoryTaleViewCell.m; sourceTree = "<group>"; };
 		5830C09B1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCreateAnnotationsView.h; sourceTree = "<group>"; };
 		5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomCreateAnnotationsView.m; sourceTree = "<group>"; };
 		5830C0A11A9F808C00E41895 /* TLTagsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLTagsControl.h; sourceTree = "<group>"; };
@@ -65,14 +71,14 @@
 		5830C0A91A9FB4FC00E41895 /* FPTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPTouchView.m; sourceTree = "<group>"; };
 		5830C0AB1A9FB50B00E41895 /* FPPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPPopoverView.h; sourceTree = "<group>"; };
 		5830C0AC1A9FB50B00E41895 /* FPPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPPopoverView.m; sourceTree = "<group>"; };
-		5830C0AE1A9FB84100E41895 /* BLCComposePlacesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCComposePlacesViewController.h; sourceTree = "<group>"; };
-		5830C0AF1A9FB84100E41895 /* BLCComposePlacesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCComposePlacesViewController.m; sourceTree = "<group>"; };
 		585E4FF11A9BC4E800E60C32 /* BLCDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCDataSource.h; sourceTree = "<group>"; };
 		585E4FF21A9BC4E800E60C32 /* BLCDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCDataSource.m; sourceTree = "<group>"; };
+		585F0F921AA7B61900FADFD6 /* BLCColorsCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCColorsCollectionCell.h; sourceTree = "<group>"; };
+		585F0F931AA7B61900FADFD6 /* BLCColorsCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCColorsCollectionCell.m; sourceTree = "<group>"; };
 		5889BA851A9ECCBD00B97A27 /* BLCCustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomAnnotation.h; sourceTree = "<group>"; };
 		5889BA861A9ECCBD00B97A27 /* BLCCustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomAnnotation.m; sourceTree = "<group>"; };
-		5889BA881A9ECD5800B97A27 /* BLCCustomAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomAnnotationView.h; sourceTree = "<group>"; };
-		5889BA891A9ECD5800B97A27 /* BLCCustomAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomAnnotationView.m; sourceTree = "<group>"; };
+		5891B7DF1AAD3D43005D4046 /* BLCCustomCallOutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCallOutView.h; sourceTree = "<group>"; };
+		5891B7E01AAD3D43005D4046 /* BLCCustomCallOutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomCallOutView.m; sourceTree = "<group>"; };
 		58A5366A1A9A99F500113151 /* BlocSpot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocSpot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58A5366E1A9A99F500113151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58A5366F1A9A99F500113151 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -221,8 +227,12 @@
 				58F417561A9CF9B70087ED2A /* BLCPoiTableViewCell.m */,
 				5830C09B1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.h */,
 				5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */,
-				5889BA881A9ECD5800B97A27 /* BLCCustomAnnotationView.h */,
-				5889BA891A9ECD5800B97A27 /* BLCCustomAnnotationView.m */,
+				582D39CF1AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.h */,
+				582D39D01AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m */,
+				585F0F921AA7B61900FADFD6 /* BLCColorsCollectionCell.h */,
+				585F0F931AA7B61900FADFD6 /* BLCColorsCollectionCell.m */,
+				5891B7DF1AAD3D43005D4046 /* BLCCustomCallOutView.h */,
+				5891B7E01AAD3D43005D4046 /* BLCCustomCallOutView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -234,8 +244,8 @@
 				58CECAF91A9B771500BFC2C0 /* BLCMapViewController.m */,
 				58F4174F1A9CF7A70087ED2A /* BLCPoiTableViewController.h */,
 				58F417501A9CF7A70087ED2A /* BLCPoiTableViewController.m */,
-				5830C0AE1A9FB84100E41895 /* BLCComposePlacesViewController.h */,
-				5830C0AF1A9FB84100E41895 /* BLCComposePlacesViewController.m */,
+				582D39CC1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.h */,
+				582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -446,6 +456,8 @@
 				5830C0A31A9F808C00E41895 /* TLTagsControl.m in Sources */,
 				5889BA871A9ECCBD00B97A27 /* BLCCustomAnnotation.m in Sources */,
 				58F4174B1A9CF6F80087ED2A /* BLCSearch.m in Sources */,
+				585F0F941AA7B61900FADFD6 /* BLCColorsCollectionCell.m in Sources */,
+				5891B7E11AAD3D43005D4046 /* BLCCustomCallOutView.m in Sources */,
 				58F417511A9CF7A70087ED2A /* BLCPoiTableViewController.m in Sources */,
 				5830C0AA1A9FB4FC00E41895 /* FPTouchView.m in Sources */,
 				5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */,
@@ -454,16 +466,16 @@
 				58FE8D2E1AA371AB007E54DC /* JVFloatLabeledTextField.m in Sources */,
 				58FE8D2F1AA371AB007E54DC /* JVFloatLabeledTextView.m in Sources */,
 				582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */,
-				5830C0B01A9FB84100E41895 /* BLCComposePlacesViewController.m in Sources */,
 				5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */,
 				58A536731A9A99F500113151 /* AppDelegate.m in Sources */,
 				58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */,
 				58F417571A9CF9B70087ED2A /* BLCPoiTableViewCell.m in Sources */,
+				582D39CE1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m in Sources */,
+				582D39D11AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m in Sources */,
 				58FE8D301AA371AB007E54DC /* NSString+TextDirectionality.m in Sources */,
 				585E4FF31A9BC4E800E60C32 /* BLCDataSource.m in Sources */,
 				58F417541A9CF8050087ED2A /* BLCPointOfInterest.m in Sources */,
 				58A536701A9A99F500113151 /* main.m in Sources */,
-				5889BA8A1A9ECD5800B97A27 /* BLCCustomAnnotationView.m in Sources */,
 				58F4174E1A9CF7110087ED2A /* BLCCategories.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

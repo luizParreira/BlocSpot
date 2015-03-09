@@ -8,12 +8,17 @@
 
 #import "BLCCustomCreateAnnotationsView.h"
 #import "IQKeyboardManager.h"
+
 #import "JVFloatLabeledTextView.h"
+
 #import "JVFloatLabeledTextField.h"
 
+#import "BLCCategoriesTableViewController.h"
+#import "BLCCategoryTaleViewCell.h"
 
 
-@interface BLCCustomCreateAnnotationsView () <UITextFieldDelegate, UITextViewDelegate, BLCCustomCreateAnnotationsViewDelegate, UIGestureRecognizerDelegate >
+
+@interface BLCCustomCreateAnnotationsView () <UITextFieldDelegate, UITextViewDelegate, BLCCategoryTaleViewCellDelegate  >
 
 @property (nonatomic, strong) UIView *topView;
 
@@ -21,26 +26,31 @@
 
 @property (nonatomic, strong) JVFloatLabeledTextField *titleField;
 @property (nonatomic, strong) JVFloatLabeledTextView *descriptionTextView;
+@property (nonatomic, strong) IQKeyboardManager *keyboardManager;
+
+@property (nonatomic, strong) NSString *tagName;
 @property (nonatomic, strong) UIView *div1;
 @property (nonatomic, strong) UIView *div2;
 @property (nonatomic, strong) UIView *div3;
 
 @property (nonatomic, strong) UIColor *floatingLabelColor;
 
-@property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) NSDictionary *metrics;
 
 
 
-@property (nonatomic, strong) UIView *categoryView;
 @property (nonatomic, strong) UIView *backView;
 @property (nonatomic, strong) UIImageView *addCategoryImageView;
 @property (nonatomic, strong) UILabel *addCategoryLabel;
 
 
-//add a tapgesture to present the category view
-@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+
+
+// CREATE A BUTTON AND ADD THE CATEGORY VIEW AS ITS SUBVIEW
+// USE ITS ACTION TO CALL THE DELEGATE
+
+
 
 
 
@@ -68,12 +78,15 @@ UIColor *floatingLabelColor ;
         [self createTextView];
         [self creadeDoneButton];
         [self creatingCategoryView];
+        [self createCategoryButton];
+
         [self createConstraints];
 
-        IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
-        keyboardManager.keyboardDistanceFromTextField = 4;
-        keyboardManager.canAdjustTextView = YES;
-        keyboardManager.shouldResignOnTouchOutside =YES;
+        self.keyboardManager = [IQKeyboardManager sharedManager];
+        self.keyboardManager.keyboardDistanceFromTextField = 4;
+        self.keyboardManager.canAdjustTextView = YES;
+        self.keyboardManager.shouldResignOnTouchOutside =YES;
+  
     }
     return self;
 }
@@ -111,21 +124,11 @@ UIColor *floatingLabelColor ;
     self.addCategoryImageView = [[UIImageView alloc]init];
     self.addCategoryLabel = [[UILabel alloc]init];
     self.backView = [UIView new];
+    self.categoryButton = [FUIButton buttonWithType:UIButtonTypeCustom];
     
     
 }
-/*
- UIImage *image =[UIImage imageNamed:@"heart"];
- UIImageView *theImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 100, 44, 44)];
- theImageView.image = image;4
- theImageView.image = [theImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
- [theImageView setTintColor:[UIColor redColor]];
- UIImage *doneImage =[UIImage imageNamed:@"done-white"];
- UIImageView *doneImageView = [[UIImageView alloc]initWithFrame:CGRectMake(24, 100, 36, 36)];
- doneImageView.image = doneImage;
- [self.view addSubview:theImageView];
- [self.view addSubview:doneImageView];
- */
+
 
 -(void)createTopView
 {
@@ -180,6 +183,7 @@ UIColor *floatingLabelColor ;
     self.backView.translatesAutoresizingMaskIntoConstraints = NO;
     self.addCategoryImageView.translatesAutoresizingMaskIntoConstraints= NO;
     self.addCategoryLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.categoryView.userInteractionEnabled = NO;
     
     self.div3.backgroundColor = [UIColor silverColor];
     [self addSubview:self.div3];
@@ -188,25 +192,7 @@ UIColor *floatingLabelColor ;
     
 }
 
-/*
--(void)creatingTagPlaceholder {
-    self.tagField.attributedPlaceholder =
-    [[NSAttributedString alloc] initWithString:NSLocalizedString(@"  Category", @"Tags of what category it belongs to")
-                                    attributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor]}];
-    self.tagField.font =[UIFont flatFontOfSize:16];
-    self.tagField.floatingLabel.font = [UIFont flatFontOfSize:11];
-    self.tagField.floatingLabelTextColor = floatingLabelColor;
-    self.tagField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.tagField.backgroundColor = [UIColor cloudsColor];
-    [self addSubview:self.tagField];
-    self.div3.backgroundColor = [UIColor silverColor];
-    [self addSubview:self.div3];
-    self.tagField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.div3.translatesAutoresizingMaskIntoConstraints =NO;
 
-
-}
- */
 
 -(void)createTextView  {
     self.descriptionTextView = [[JVFloatLabeledTextView alloc] init];
@@ -232,6 +218,7 @@ UIColor *floatingLabelColor ;
     [self.doneButton setTitle:@"DONE" forState:UIControlStateNormal];
     [self.doneButton addTarget:self action:@selector(doneButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
+    
     self.doneButton.buttonColor = [UIColor midnightBlueColor];
     self.doneButton.shadowColor = [UIColor wetAsphaltColor];
     self.doneButton.shadowHeight = 3.0f;
@@ -246,15 +233,20 @@ UIColor *floatingLabelColor ;
 }
 
 
--(void)createTapGesture {
+-(void)createCategoryButton {
     
-    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
-    self.tapGesture.delegate = self;
-    self.tapGesture.numberOfTapsRequired = 1;
-    [self.categoryView addGestureRecognizer:self.tapGesture];
-    [self.backView addGestureRecognizer:self.tapGesture];
-    [self.addCategoryImageView addGestureRecognizer:self.tapGesture];
-    [self.addCategoryLabel addGestureRecognizer:self.tapGesture];
+    [self.categoryButton addTarget:self action:@selector(addCategoryButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.categoryButton.buttonColor = [UIColor cloudsColor];
+    self.categoryButton.shadowColor = [UIColor silverColor];
+    self.categoryButton.shadowHeight = 3.0f;
+    self.categoryButton .cornerRadius = 6.0f;
+    self.categoryButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [self.categoryButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [self.categoryButton setTitleColor:[UIColor silverColor] forState:UIControlStateHighlighted];
+    [self addSubview:self.categoryButton];
+    [self.categoryButton addSubview:self.categoryView];
+    self.categoryButton.translatesAutoresizingMaskIntoConstraints = NO;
     
 }
 
@@ -271,6 +263,18 @@ UIColor *floatingLabelColor ;
     
     return mutAttString;
     
+    
+}
+
+-(NSAttributedString *)titleLabelStringWithCategory:(NSString *)categoryString withColor:(UIColor *)color  {
+    
+    NSString *baseString = [categoryString uppercaseString];
+    
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSForegroundColorAttributeName:color,NSFontAttributeName:[UIFont boldFlatFontOfSize:20]}];
+    
+    return mutAttString;
+    
+    
 }
 
 // Creating  auto layout constraints for each view
@@ -278,7 +282,7 @@ UIColor *floatingLabelColor ;
 -(void)createConstraints  {
 
 
-    NSDictionary *viewDictionary = NSDictionaryOfVariableBindings(_titleField, _descriptionTextView, _doneButton, _div1, _div2,_div3, _categoryView,_addCategoryImageView, _addCategoryLabel,_backView  ,_topView, _titleLabel);
+    NSDictionary *viewDictionary = NSDictionaryOfVariableBindings(_titleField, _descriptionTextView, _doneButton, _div1, _div2,_div3, _categoryButton,_addCategoryImageView, _addCategoryLabel,_backView  ,_topView, _titleLabel , _categoryView);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_topView]|"
                                                                  options:kNilOptions
                                                                  metrics:self.metrics
@@ -305,7 +309,7 @@ UIColor *floatingLabelColor ;
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:viewDictionary]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_categoryView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_categoryButton]|"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:viewDictionary]];
@@ -318,11 +322,11 @@ UIColor *floatingLabelColor ;
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:viewDictionary]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_titleLabel(==44)][_div3(==0.5)][_titleField(==44)][_div1(==0.5)][_descriptionTextView(==100)][_div2(==0.5)][_categoryView(==44)][_doneButton(==44)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_titleLabel(==44)][_div3(==0.5)][_titleField(==44)][_div1(==0.5)][_descriptionTextView(==100)][_div2(==0.5)][_categoryButton(==44)][_doneButton(==44)]"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:viewDictionary]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_topView(==44)][_div3(==0.5)][_titleField(==44)][_div1(==0.5)][_descriptionTextView(==100)][_div2(==0.5)][_categoryView(==44)][_doneButton(==44)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_topView(==44)][_div3(==0.5)][_titleField(==44)][_div1(==0.5)][_descriptionTextView(==100)][_div2(==0.5)][_categoryButton(==44)]-[_doneButton(==44)]"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                 views:viewDictionary]];
@@ -363,6 +367,14 @@ UIColor *floatingLabelColor ;
                                                                           options:kNilOptions
                                                                           metrics:nil
                                                                             views:viewDictionary]];
+    [self.categoryButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_categoryView]|"
+                                                                          options:kNilOptions
+                                                                          metrics:nil
+                                                                            views:viewDictionary]];
+    [self.categoryButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_categoryView]|"
+                                                                          options:kNilOptions
+                                                                          metrics:nil
+                                                                            views:viewDictionary]];
 
 
 
@@ -381,10 +393,10 @@ UIColor *floatingLabelColor ;
     _POI = POI;
     _POI.placeName = _titleField.text;
     _POI.notes = _descriptionTextView.text;
-    //_POI.category = [_tagsControl.tags lastObject];
-    
+    _POI.category = _category;
     
 }
+
 
 
 
@@ -395,19 +407,26 @@ UIColor *floatingLabelColor ;
            didPressDoneButton:self.doneButton
                 withTitleText:self.titleField.text
           withDescriptionText:self.descriptionTextView.text
-                      withTag:nil];
+//                 withCategory:self.category
+     ];
+    self.titleField.text = @"";
+    self.descriptionTextView.text = @"";
+
 }
 
 #pragma mark UITapGestureRecognizer action
 
--(void)tapFired:(UITapGestureRecognizer *)sender
+-(void)addCategoryButtonPressed:(FUIButton *)sender
 {
+
+    [self.delegate customViewDidPressAddCategoriesView:self];
     
-    //TO DO : present the table view from the top down representing current categories and the opportunity to create more
 }
 
 
-#pragma mark UITextViewDelegate UITextFieldDelegate
+
+
+
 
 //-(void)textFieldDidBeginEditing:(UITextField *)textField {
 //    [self.titleField becomeFirstResponder];

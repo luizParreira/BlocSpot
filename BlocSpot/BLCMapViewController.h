@@ -16,6 +16,7 @@
 @protocol BLCMapViewControllerDelegate <NSObject>
 
 -(void) viewController:(BLCMapViewController *)viewController didLongPressOnMap:(MKMapView *)map;
+-(void)controller:(BLCMapViewController *)controller didComeFromMapVC:(BOOL)yesOrNo;
 
 @end
 
@@ -30,5 +31,11 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
 @property (nonatomic, strong) NSArray *diskArray;
+
+
+
+
+@property (nonatomic, assign) BOOL comingFromAddAnnotationState;
+@property (nonatomic, assign) BOOL comingFromMapViewState;
 
 @end
