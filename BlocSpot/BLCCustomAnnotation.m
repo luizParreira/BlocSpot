@@ -12,16 +12,15 @@
 
 
 
--(id)initWithCoordinate:(CLLocationCoordinate2D)coordinate
+-(id)initWithCoordinate:(CLLocationCoordinate2D)coordinate 
 {
     self = [super init];
     if (self) {
         self.coordinate = coordinate;
         self.latitude = self.coordinate.latitude;
         self.longitude = self.coordinate.longitude;
-    
-        
-        //        self.backgroundColor = color;
+//        self.backgroundColor = color;
+
         
     }
     return self;

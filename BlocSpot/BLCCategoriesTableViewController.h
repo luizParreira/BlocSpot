@@ -13,17 +13,15 @@ typedef NS_ENUM(NSInteger, BLCCategoriesTableViewControllerState) {
 };
 
 
-@class BLCCategoriesTableViewController, BLCCategories, BLCCategoryTaleViewCell;
+@class BLCCategoriesTableViewController, BLCCategories;
 @protocol BLCCategoriesTableViewControllerDelegate <NSObject>
 
--(void)didSelectCell:(BLCCategoryTaleViewCell *)cell;
-//-(void)controller:(BLCCategoriesTableViewController *)controller didPressDoneToSelectView:(UIView *)view;
+
 -(void)controllerDidDismiss:(BLCCategoriesTableViewController *)controller;
--(void)category:(BLCCategories *)categoriesChosen;
+-(void)category:(BLCCategories *)categoriesChosen withImageView:(UIImageView *)imageView;
 
--(void)controllerDidChoose:(UIColor *)color;
 
--(void)didCompleteWithImageView:(UIImageView *)image;
+-(void)didCreateCategory:(BLCCategories *)category ;
 @end
 @interface BLCCategoriesTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource >
 
@@ -33,17 +31,20 @@ typedef NS_ENUM(NSInteger, BLCCategoriesTableViewControllerState) {
 @property (nonatomic, assign) BLCCategoriesTableViewControllerState state;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UICollectionView *colorsCollectionView;
+
 @property (nonatomic, strong)  NSMutableArray *colorsArray;
 @property (nonatomic, strong)  NSMutableArray *colorsArraySimilar;
 
 @property (nonatomic, strong) UIColor *categoryChosenColor;
 
-@property (nonatomic, strong) NSDictionary *categories;
+@property (nonatomic, strong) NSMutableDictionary *categories;
 
 @property (nonatomic, strong) NSMutableArray *categoriesCreated;
 
 @property (nonatomic, strong) NSMutableArray *selectedCategories;
-@property (nonatomic, strong) NSMutableArray *selectedCell;
+@property (nonatomic, strong) NSMutableArray *imageViewSelected;
+
+
 
 
 

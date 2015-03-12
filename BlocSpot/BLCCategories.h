@@ -20,6 +20,8 @@ typedef NS_ENUM(NSInteger, BLCCategoriesState) {
 @property (nonatomic, strong) NSArray *selectedCategory;
 @property (nonatomic, strong) NSMutableArray *pointsOfInterest;
 @property (nonatomic, strong) NSMutableArray *colorList;
+@property (nonatomic, strong) UIImageView *categoryImage;
+
 
 
 -(instancetype)initWithDictionary:(NSDictionary *)categoryDictionary;

@@ -21,7 +21,7 @@
 
 
 
-@interface BLCCategoriesTableViewController () <UIGestureRecognizerDelegate, UITextFieldDelegate, BLCCategoryTaleViewCellDelegate, BLCCustomCreateAnnotationsViewDelegate>
+@interface BLCCategoriesTableViewController () <UIGestureRecognizerDelegate, UITextFieldDelegate, BLCCategoryTaleViewCellDelegate>
 
 
 @property (nonatomic, strong)BLCCategoryTaleViewCell *cell;
@@ -154,7 +154,7 @@ static NSString *kFullTagLabel = @"heart_label_full";
                                    [UIColor pumpkinColor],
                                    [UIColor pomegranateColor],
                                    [UIColor asbestosColor],nil];
-        self.categories =[NSDictionary new];
+        self.categories =[NSMutableDictionary new];
         self.categoriesCreated =[NSMutableArray new];
         
         UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -163,7 +163,7 @@ static NSString *kFullTagLabel = @"heart_label_full";
         self.navigationItem.leftBarButtonItem = leftBarButton;
         
         //INITIALIZE A BUTTON ON THE NAVIGATION BAR
-
+        
 
 
         
@@ -286,12 +286,11 @@ static NSString *kFullTagLabel = @"heart_label_full";
 
     
 //     SECOND VIEW SHOWN AFTER DOUBLE TAP
-    //TRYING TO REMOVE VIEWS FROM SUPERVIEW, SO THAT WHEN THEY ARE CREATED AGAIN IT DOESNT COLLIDE WITH WHAT HAVE ALREADY BEEN CREATED
 
     self.addCategoryField.frame = CGRectMake(0, 0, (CGRectGetWidth(self.tableView.frame)-44), 44);
     self.div1.frame = CGRectMake(CGRectGetMaxX(self.addCategoryField.frame), 0, 0.5, 44);
     self.doneButton.frame = CGRectMake(CGRectGetMaxX(self.div1.frame), 0, 44, 44);
-  //  self.colorsCollectionView.frame = CGRectMake((CGRectGetWidth(self.tableView.frame)-44)/2, 0, (CGRectGetWidth(self.tableView.frame)-44)/2, 44);
+
     self.colorsCollectionView.frame = CGRectMake(0, CGRectGetMaxY(self.addCategoryField.frame),viewWidth, 44);
 
     [self createTapGesture];
@@ -304,8 +303,6 @@ static NSString *kFullTagLabel = @"heart_label_full";
 -(void)createBottomViews
 {
     self.bottomView.backgroundColor = [UIColor silverColor];
-
-//    self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     
 }
 
@@ -465,7 +462,20 @@ static NSString *kFullTagLabel = @"heart_label_full";
     
 
 }
+-(UIImageView *)returnImageColoredForColor:(UIColor *)color
+{
+    UIImageView *imageView = [UIImageView new];
+    UIImage *image = [UIImage imageNamed:@"heart"];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.image = image;
+    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
+    [imageView setTintColor:color];
+    
+    //    chosenColor = nil;
+    return imageView;
+    
+}
 
 #pragma mark UIButton action
 -(void)doneButtonPressed:(UIButton *)sender
@@ -474,11 +484,13 @@ static NSString *kFullTagLabel = @"heart_label_full";
     if (self.addCategoryField.text.length >0 && self.categoryChosenColor && _categoryChosenColor !=nil)
     {
         // call delegate method
-        
 
         
         // call helper function
-        [self animatingAView:self.doneButton toAnother:[self.bottomView viewWithTag:2] forState:BLCCategoriesTableViewControllerShowView flipFromTop:NO];
+        [self animatingAView:self.doneButton
+                   toAnother:[self.bottomView viewWithTag:2]
+                    forState:BLCCategoriesTableViewControllerShowView
+                 flipFromTop:NO];
         
         
         //remove other subviews of self.containervie
@@ -487,35 +499,29 @@ static NSString *kFullTagLabel = @"heart_label_full";
         [self.doneButton removeFromSuperview];
         [self.colorsCollectionView removeFromSuperview];
     
-        // create a temporary dictionary
-        NSMutableDictionary *tempDic = [NSMutableDictionary dictionary];
         
-        [tempDic setObject:self.addCategoryField.text forKey:@"categoryName"];
-        [tempDic setObject:self.categoryChosenColor forKey:@"categoryColor"];
-        
-        
-        //        [tempDic setObject:0 forKey:@"selected"];
-        // make temp dictionary equal to categories dictionary
-        self.categories = tempDic;
-
+        [self.categories setObject:self.addCategoryField.text forKey:@"categoryName"];
+        [self.categories setObject:self.categoryChosenColor forKey:@"categoryColor"];
+        [self.categories setObject:[self returnImageColoredForColor:self.categoryChosenColor] forKey:@"categoryImage"];
+        NSLog(@"IMAGE BEING SAVED = ** %@ **", [self returnImageColoredForColor:self.categoryChosenColor]);
         
         // Remove colors from array so they cant be repeated
         [self.colorsArray removeObject:self.colorsArray[selectedIndex]];
         [self.colorsArraySimilar removeObject:self.colorsArraySimilar[selectedIndex]];
         
         // pass categories dictionaries as parameters of the BLCCategories object
-        BLCCategories *categories = [self categoryInitializer:self.categories];
-        [[BLCDataSource sharedInstance] addCategory:categories];
-        
-        // add to list all the objects created
-        [self.categoriesCreated addObject:categories];
+        BLCCategories *category = [[BLCCategories alloc]initWithDictionary:self.categories];
+        [[BLCDataSource sharedInstance] addCategory:category];
+
+
+
         NSLog(@"self.categoriesCreted %@", self.categoriesCreated);
         
         [self.tableView reloadData];
 
         // reload and adjust tge data
         self.addCategoryField.text = @"";
-        self.categoryChosenColor = nil;
+//        self.categoryChosenColor = nil;
 //        self.categoryChosenColor = nil;
 
     }
@@ -524,16 +530,8 @@ static NSString *kFullTagLabel = @"heart_label_full";
     }
 }
 
--(BLCCategories *)categoryInitializer:(NSDictionary *)dic {
-    
-    BLCCategories *category = [[BLCCategories alloc]initWithDictionary:dic];
-    return category;
-}
-
-
 -(void)barButtonItemDonePressed:(id)sender
 {
-    if (_selectedCategories){
 //
 //    
 //    if (self.mapVC.comingFromAddAnnotationState)
@@ -541,18 +539,26 @@ static NSString *kFullTagLabel = @"heart_label_full";
 //    NSLog(@"selected Cell content View[-1]---[ %@ ]----", _selectedCell[0] );
     
      BLCCategories *categories = _selectedCategories[0];
-    NSLog(@"selected Categories---[ %@ ]----", _selectedCategories );
-        [self.delegate category:categories];
-        [self.delegate controllerDidDismiss:self];
+    if (categories){
+        [self.delegate category:categories withImageView:categories.categoryImage];
+            
+    NSLog(@"self.catefories['categoryImage'] = %@", categories.categoryImage);
+    
 
-        
-    } else {
-        [self.delegate controllerDidDismiss:self];
-        
+    
+    [self.delegate controllerDidDismiss:self];
     }
+
 }
 
-
+#pragma mark BLCCategoryTaleViewCell
+//
+//-(void)didGetImageView:(UIImageView *)imageView {
+//    
+//    self.imageViewSelected = [NSMutableArray array];
+//    [self.imageViewSelected addObject:imageView];
+//    
+//}
 
 
 #pragma Attributed String
@@ -619,6 +625,7 @@ heightForFooterInSection:(NSInteger)section
     cell.delegate = self;
     
     BLCCategories *categories = [BLCDataSource sharedInstance].categories[indexPath.row];
+    NSLog(@"[BLCDataSource sharedInstance].categories *** %@ ***", [BLCDataSource sharedInstance].categories);
     cell.categoryLabel.attributedText = [self categoryLabelAttributedStringForString:categories.categoryName andColor:categories.color];
     [cell.tagImageView setTintColor:categories.color];
     [cell.tagImageViewFull setHidden:YES];
@@ -637,15 +644,18 @@ heightForFooterInSection:(NSInteger)section
     [cell.tagImageViewFull setHidden:NO];
     [cell.tagImageViewFull setTintColor:categories.color];
 
-    self.selectedCell = [NSMutableArray array];
-    [self.selectedCell addObject:cell.tagImageViewFull];
+//    self.selectedCell = [NSMutableArray array];
+//    [self.selectedCell addObject:cell.tagImageViewFull];
     self.selectedCategories = [NSMutableArray array];
     [self.selectedCategories addObject:categories];
-    [self.delegate didCompleteWithImageView:cell.tagImageViewFull];
+    
+    self.imageViewSelected = [NSMutableArray array];
+    [self.imageViewSelected addObject:cell.tagImageViewFull];
+
 
 //    selectedIndex = indexPath.row;
 //    [self.tableView reloadData];
-
+    [cell setNeedsDisplay];
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -661,9 +671,12 @@ heightForFooterInSection:(NSInteger)section
     [cell.tagImageView setHidden:NO];
 
     [cell.tagImageView setTintColor:categories.color];
-    [self.selectedCell removeObject:cell.tagImageViewFull];
+//    [self.selectedCell removeObject:cell.tagImageViewFull];
     [self.selectedCategories removeObject:categories];
+//    [self.imageViewSelected removeObject:cell.tagImageViewFull];
+
 //    [self.tableView reloadData];
+    [cell setNeedsDisplay];
 
 
 }
@@ -676,13 +689,8 @@ heightForFooterInSection:(NSInteger)section
 
 }
 
-// Override to support conditional editing of the table view.
-// This only needs to be implemented if you are going to be returning NO
-// for some items. By default, all items are editable.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return YES if you want the specified item to be editable.
-    return YES;
-}
+
+// EDIT EACH CELL 
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

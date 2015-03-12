@@ -64,7 +64,6 @@
         
             self.tagImageViewFull.translatesAutoresizingMaskIntoConstraints = NO;
         
-        
             [self.contentView addSubview:_tagImageViewFull];
 //            [self.tagImageView1 setHidden:YES];
         

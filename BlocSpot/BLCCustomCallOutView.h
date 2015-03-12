@@ -38,5 +38,8 @@
 //- 3*UIButtons - [Direction][Share][Delete]
 @interface BLCCustomCallOutView : MKAnnotationView
 
+@property (nonatomic,retain)UIView *contentView;
+
+
 
 @end
