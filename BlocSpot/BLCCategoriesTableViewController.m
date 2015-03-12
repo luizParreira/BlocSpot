@@ -540,7 +540,7 @@ static NSString *kFullTagLabel = @"heart_label_full";
     
      BLCCategories *categories = _selectedCategories[0];
     if (categories){
-        [self.delegate category:categories withImageView:categories.categoryImage];
+        [self.delegate category:categories withImageView:self.imageViewSelected[0]];
             
     NSLog(@"self.catefories['categoryImage'] = %@", categories.categoryImage);
     

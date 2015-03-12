@@ -106,6 +106,7 @@ static NSString *viewId = @"HeartAnnotation";
 }
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
     // set the tab bar color
     self.tablePoiVC =[[ BLCPoiTableViewController alloc]init];
     self.navigationItem.hidesBackButton = YES;
@@ -170,7 +171,6 @@ static NSString *viewId = @"HeartAnnotation";
     }
 
 
-    self.categoryImageView = [[UIImageView alloc]init];
 
 
 
@@ -535,6 +535,8 @@ withDescriptionText:(NSString *)descriptionText
     _category = categories;
     self.imageMutArray = [NSMutableArray new];
     [self.imageMutArray addObject:imageView];
+    self.categoryImageView = [[UIImageView alloc]init];
+
     self.categoryImageView = imageView;
     [self.params setObject:categories forKey:@"category"];
 
@@ -559,16 +561,6 @@ withDescriptionText:(NSString *)descriptionText
 //    
 //}
 
-
--(void)getImageView:(UIImageView *)imageView
-{
-    
-}
-
--(void) addImageView:(UIImageView *)imageView asSubviewOf:(MKAnnotationView *)annotationView
-{
-    
-}
 #pragma mark tap gesture recognizer
 
 -(void)tapFired:(UITapGestureRecognizer *)sender
@@ -706,7 +698,7 @@ withDescriptionText:(NSString *)descriptionText
                        initWithAnnotation:annotation reuseIdentifier:viewId];
         _annotationView.canShowCallout = NO;
         _annotationView.opaque = NO;
-        [_annotationView addSubview:[self.imageMutArray lastObject]];
+        [_annotationView addSubview:[self returnImageColored]];
         
         
     }   else {
@@ -717,30 +709,22 @@ withDescriptionText:(NSString *)descriptionText
 }
 
 // helper function
-//-(UIImageView *)returnImageColored
-//{
-//    UIImageView *imageView = [UIImageView new];
-//    UIImage *image = [UIImage imageNamed:@"heart"];
-//    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-//    imageView.image = image;
-//    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//    
-//    for (BLCCategories *category in [BLCDataSource sharedInstance].categories){
-//    //    UIImage *image = [UIImage imageNamed:@"heart"];
-//        if (category == _category){
-//            imageView = category.categoryImage;
-//            [imageView setTintColor:category.color];
-//
-//        }
-//    }
-//        
-//        
-//
-//    
-////    chosenColor = nil;
-//    return imageView;
-//    
-//}
+-(UIImageView *)returnImageColored
+{
+    UIImageView *imageView = [UIImageView new];
+    UIImage *image = [UIImage imageNamed:@"heart"];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.image = image;
+    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    [imageView setTintColor:_category.color];
+
+
+    
+//    chosenColor = nil;
+    return imageView;
+    
+}
 
 
 
