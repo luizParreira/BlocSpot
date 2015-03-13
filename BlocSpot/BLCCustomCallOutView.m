@@ -43,120 +43,77 @@
         self.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds) - 80, 200);
         // CREATE THE TOPVIEW THAT WILL HOLD THE topView view, the title label, the "visited / not visited" button
         // and a line dividing them both
-//        
-//        self.topView = [UIView new];
-//        self.topView.translatesAutoresizingMaskIntoConstraints = NO;
-//        self.backgroundColor = [UIColor cloudsColor];
-//        [self addSubview:self.topView];
-//        
-//        
-//        self.lineDivide = [UIView new];
-//        self.lineDivide.backgroundColor = [UIColor silverColor];
-//        self.lineDivide.translatesAutoresizingMaskIntoConstraints = NO;
-//        [self addSubview:self.lineDivide];
-//        
-//        self.visitIndicatorButton =[UIButton buttonWithType:UIButtonTypeCustom];
-//        [self.visitIndicatorButton setImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
-//        [self.visitIndicatorButton addTarget:self action:@selector(visitIndicatorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:self.visitIndicatorButton];
-//        self.visitIndicatorButton.translatesAutoresizingMaskIntoConstraints = NO;
-//        
-//        
-//        // start with the labels - > the background UIView - > then the UIButtons
-//        self.descriptionLabel = [UILabel new];
-//        self.descriptionLabel.numberOfLines = 0;
-//        self.descriptionLabel.translatesAutoresizingMaskIntoConstraints =NO;
-//        [self addSubview:self.descriptionLabel];
-//        
-//        
-//        self.categoryLabel = [UILabel new];
-//        self.categoryLabel.numberOfLines = 0;
-//        self.categoryLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//        [self addSubview:self.categoryLabel];
-//        
-//        
-//
-//        self.backButtonsView = [UIView new];
-//        self.backButtonsView.translatesAutoresizingMaskIntoConstraints = NO;
-//        [self addSubview:self.backButtonsView];
-//        
-//        // CREATE 3 buttons and add them as subview of backButtonsView
-//        // 1- MAP DIRECTIONS
-//        self.mapDirections =[UIButton buttonWithType:UIButtonTypeCustom];
-//        [self.mapDirections setImage:[UIImage imageNamed:@"directions_arrow"] forState:UIControlStateNormal];
-//        [self.mapDirections addTarget:self action:@selector(mapDirectionsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.backButtonsView addSubview:self.mapDirections];
-//        self.mapDirections.translatesAutoresizingMaskIntoConstraints = NO;
-//        
-//        
-//        
-//        // 2- SHARE
-//        self.share =[UIButton buttonWithType:UIButtonTypeCustom];
-//        [self.mapDirections setImage:[UIImage imageNamed:@"directions_arrow"] forState:UIControlStateNormal];
-//        [self.share addTarget:self action:@selector(shareButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.backButtonsView addSubview:self.share];
-//        self.share.translatesAutoresizingMaskIntoConstraints = NO;
-//        
-//        
-//        
-//        // 3- DELETE BUTTON
-//        self.deleteButton =[UIButton buttonWithType:UIButtonTypeCustom];
-//        [self.deleteButton setImage:[UIImage imageNamed:@"delete_bin"] forState:UIControlStateNormal];
-//        [self.deleteButton addTarget:self action:@selector(deleteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.backButtonsView addSubview:self.deleteButton];
-//        self.deleteButton.translatesAutoresizingMaskIntoConstraints = NO;
-//
-//        
-//        [self createConstraints];
         
-        // Set the frame size to the appropriate values.
-        CGRect  myFrame = self.frame;
-        myFrame.size.width = 40;
-        myFrame.size.height = 40;
-        self.frame = myFrame;
-//        self.image = MultiplyImageByConstantColor([UIImage imageNamed:@"heart"], [UIColor redColor]);
-//        [self setTintColor:[UIColor redColor]];
-        // The opaque property is YES by default. Setting it to
-        // NO allows map content to show through any unrendered parts of your view.
-        self.opaque = NO;
+        self.topView = [UIView new];
+        self.topView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.backgroundColor = [UIColor cloudsColor];
+        [self addSubview:self.topView];
+        
+        
+        self.lineDivide = [UIView new];
+        self.lineDivide.backgroundColor = [UIColor silverColor];
+        self.lineDivide.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.lineDivide];
+        
+        self.visitIndicatorButton =[UIButton buttonWithType:UIButtonTypeCustom];
+        [self.visitIndicatorButton setImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+        [self.visitIndicatorButton addTarget:self action:@selector(visitIndicatorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.visitIndicatorButton];
+        self.visitIndicatorButton.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        // start with the labels - > the background UIView - > then the UIButtons
+        self.descriptionLabel = [UILabel new];
+        self.descriptionLabel.numberOfLines = 0;
+        self.descriptionLabel.translatesAutoresizingMaskIntoConstraints =NO;
+        [self addSubview:self.descriptionLabel];
+        
+        
+        self.categoryLabel = [UILabel new];
+        self.categoryLabel.numberOfLines = 0;
+        self.categoryLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.categoryLabel];
+        
+        
+
+        self.backButtonsView = [UIView new];
+        self.backButtonsView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.backButtonsView];
+        
+        // CREATE 3 buttons and add them as subview of backButtonsView
+        // 1- MAP DIRECTIONS
+        self.mapDirections =[UIButton buttonWithType:UIButtonTypeCustom];
+        [self.mapDirections setImage:[UIImage imageNamed:@"directions_arrow"] forState:UIControlStateNormal];
+        [self.mapDirections addTarget:self action:@selector(mapDirectionsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonsView addSubview:self.mapDirections];
+        self.mapDirections.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        
+        // 2- SHARE
+        self.share =[UIButton buttonWithType:UIButtonTypeCustom];
+        [self.mapDirections setImage:[UIImage imageNamed:@"directions_arrow"] forState:UIControlStateNormal];
+        [self.share addTarget:self action:@selector(shareButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonsView addSubview:self.share];
+        self.share.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        
+        // 3- DELETE BUTTON
+        self.deleteButton =[UIButton buttonWithType:UIButtonTypeCustom];
+        [self.deleteButton setImage:[UIImage imageNamed:@"delete_bin"] forState:UIControlStateNormal];
+        [self.deleteButton addTarget:self action:@selector(deleteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonsView addSubview:self.deleteButton];
+        self.deleteButton.translatesAutoresizingMaskIntoConstraints = NO;
+
+        
+        [self createConstraints];
+        
+
+
     }
     return self;
 }
-//UIImage *MultiplyImageByConstantColor( UIImage *image, UIColor *color ) {
-//    
-//    CGSize backgroundSize = image.size;
-//    UIGraphicsBeginImageContext(backgroundSize);
-//    
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    
-//    CGRect backgroundRect;
-//    backgroundRect.size = backgroundSize;
-//    backgroundRect.origin.x = 0;
-//    backgroundRect.origin.y = 0;
-//    
-//    float r,g,b,a;
-//    [color getRed:&r green:&g blue:&b alpha:&a];
-//    CGContextSetRGBFillColor(ctx, r, g, b, a);
-//    CGContextFillRect(ctx, backgroundRect);
-//    
-//    CGRect imageRect;
-//    imageRect.size = image.size;
-//    imageRect.origin.x = (backgroundSize.width - image.size.width)/2;
-//    imageRect.origin.y = (backgroundSize.height - image.size.height)/2;
-//    
-//    // Unflip the image
-//    CGContextTranslateCTM(ctx, 0, backgroundSize.height);
-//    CGContextScaleCTM(ctx, 1.0, -1.0);
-//    
-//    CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
-//    CGContextDrawImage(ctx, imageRect, image.CGImage);
-//    
-//    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-//    
-//    UIGraphicsEndImageContext();
-//    
-//    return newImage;
-//}
 
 -(void)createConstraints
 {

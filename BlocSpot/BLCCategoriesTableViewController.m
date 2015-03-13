@@ -46,6 +46,8 @@
 
 @property (nonatomic, strong) UIView *containerView;
 
+@property (nonatomic, strong) UIColor *similarChosenColor;
+
 
 
 @end
@@ -157,13 +159,15 @@ static NSString *kFullTagLabel = @"heart_label_full";
         self.categories =[NSMutableDictionary new];
         self.categoriesCreated =[NSMutableArray new];
         
+        
+        //INITIALIZE A BUTTON ON THE NAVIGATION BAR
+
         UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                           target:self
                                                                                           action:@selector(barButtonItemDonePressed:)];
         self.navigationItem.leftBarButtonItem = leftBarButton;
         
-        //INITIALIZE A BUTTON ON THE NAVIGATION BAR
-        
+        self.similarChosenColor = [UIColor new];
 
 
         
@@ -481,7 +485,7 @@ static NSString *kFullTagLabel = @"heart_label_full";
 -(void)doneButtonPressed:(UIButton *)sender
 {
     // Checking to see if there are any colors chosen or if there are any text written
-    if (self.addCategoryField.text.length >0 && self.categoryChosenColor && _categoryChosenColor !=nil)
+    if (self.addCategoryField.text.length >0 && self.categoryChosenColor && _similarChosenColor)
     {
         // call delegate method
 
@@ -506,8 +510,8 @@ static NSString *kFullTagLabel = @"heart_label_full";
         NSLog(@"IMAGE BEING SAVED = ** %@ **", [self returnImageColoredForColor:self.categoryChosenColor]);
         
         // Remove colors from array so they cant be repeated
-        [self.colorsArray removeObject:self.colorsArray[selectedIndex]];
-        [self.colorsArraySimilar removeObject:self.colorsArraySimilar[selectedIndex]];
+//        [self.colorsArray removeObject:self.self.categoryChosenColor];
+//        [self.colorsArraySimilar removeObject:self.similarChosenColor];
         
         // pass categories dictionaries as parameters of the BLCCategories object
         BLCCategories *category = [[BLCCategories alloc]initWithDictionary:self.categories];
@@ -540,7 +544,7 @@ static NSString *kFullTagLabel = @"heart_label_full";
     
      BLCCategories *categories = _selectedCategories[0];
     if (categories){
-        [self.delegate category:categories withImageView:self.imageViewSelected[0]];
+        [self.delegate category:categories];
             
     NSLog(@"self.catefories['categoryImage'] = %@", categories.categoryImage);
     
@@ -751,7 +755,7 @@ heightForFooterInSection:(NSInteger)section
     
     selectedIndex = indexPath.row;
     // Set the selection here so that selection of cell is shown to ur user immediately
-    self.categoryChosenColor = self.colorsArraySimilar[indexPath.row]; ;
+    self.categoryChosenColor = self.colorsArray[indexPath.row]; ;
 
 
     [colorCell.checkImageView setHidden:NO];
@@ -767,7 +771,8 @@ heightForFooterInSection:(NSInteger)section
     BLCColorsCollectionCell *colorCell = (BLCColorsCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
     // Set the index to an invalid value so that the cells get deselected
-    colorCell.colorView.backgroundColor = self.colorsArray[indexPath.row];
+    colorCell.colorView.backgroundColor = self.colorsArraySimilar[indexPath.row];
+    self.similarChosenColor = self.colorsArraySimilar[indexPath.row];
     [colorCell.checkImageView setHidden:YES];
     
     [colorCell setNeedsDisplay];

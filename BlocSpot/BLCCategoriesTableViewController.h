@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, BLCCategoriesTableViewControllerState) {
 
 
 -(void)controllerDidDismiss:(BLCCategoriesTableViewController *)controller;
--(void)category:(BLCCategories *)categoriesChosen withImageView:(UIImageView *)imageView;
+-(void)category:(BLCCategories *)categoriesChosen;
 
 
 -(void)didCreateCategory:(BLCCategories *)category ;

@@ -86,10 +86,8 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 
 @property (nonatomic, strong)UIColor *chosenColor;
 
-@property (nonatomic, assign)BOOL isCateforyCreated;
 
-@property (nonatomic, strong) UIImageView *categoryImageView;
-@property (nonatomic, strong) NSMutableArray *imageMutArray;
+
 
 @end
 static NSString *viewId = @"HeartAnnotation";
@@ -120,7 +118,7 @@ static NSString *viewId = @"HeartAnnotation";
     self.mapView.showsUserLocation = YES;
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    
+
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
     self.tapGesture.delegate = self;
     self.tapGesture.numberOfTapsRequired = 1;
@@ -161,17 +159,7 @@ static NSString *viewId = @"HeartAnnotation";
     self.popover.popoverContentSize = CGSizeMake(self.popover.contentViewController.view.frame.size.width, 44*7 + 20);
         
     }
-
-//
-    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations){
-        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(poi.customAnnotation.latitude, poi.customAnnotation.longitude);
-        BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc]initWithCoordinate:coord];
-
-        [self.mapView addAnnotation:annotation];
-    }
-
-
-
+    [self.mapView addAnnotations:[self createAnnotations]];
 
 
     //View that will create a new POI
@@ -190,9 +178,21 @@ static NSString *viewId = @"HeartAnnotation";
         self.params = [NSMutableDictionary new];
     }
 
+
 }
 
-
+- (NSMutableArray *)createAnnotations
+{
+    NSMutableArray *annotations = [[NSMutableArray alloc] init];
+    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
+    {
+        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(poi.customAnnotation.latitude, poi.customAnnotation.longitude);
+        poi.customAnnotation = [[BLCCustomAnnotation alloc]initWithCoordinate:coord];
+        [annotations addObject:poi.customAnnotation];
+    }
+    return annotations;
+    
+}
 - (void)setUpSearchBar {
     self.searchBar = [[UISearchBar alloc] init];
     _searchBar.showsCancelButton = YES;
@@ -491,14 +491,8 @@ withDescriptionText:(NSString *)descriptionText
     [[BLCDataSource sharedInstance] addPointOfInterest:self.poi toCategoryArray:self.poi.category];
 
 
-//    _chosenColor = nil;
-    
+
 }
-//-(void)setChosenColor:(UIColor *)chosenColor {
-//    [self setChosenColor:chosenColor];
-//    self.isCateforyCreated =NO;
-//    
-//}
 -(void)customViewDidPressAddCategoriesView:(UIView *)categoryView
 {
     NSLog(@"tap being fired DELEGATE");
@@ -531,35 +525,15 @@ withDescriptionText:(NSString *)descriptionText
 }
 
 
--(void)category:(BLCCategories *)categories withImageView:(UIImageView *)imageView {
+-(void)category:(BLCCategories *)categories {
     _category = categories;
-    self.imageMutArray = [NSMutableArray new];
-    [self.imageMutArray addObject:imageView];
-    self.categoryImageView = [[UIImageView alloc]init];
 
-    self.categoryImageView = imageView;
     [self.params setObject:categories forKey:@"category"];
 
     
     self.createAnnotationView.titleLabel.attributedText = [self.createAnnotationView titleLabelStringWithCategory:categories.categoryName withColor:categories.color];
-//    [self reloadInputViews];
-
+\
 }
-//+(void)load {
-//    BLCMapViewController *mapVC = [[BLCMapViewController alloc]init];
-//    chosenColor = mapVC.category.color;
-//}
-
-//-(void)returnColorForCategory:(BLCCategories *)category {
-//    
-//    if (category){
-//    
-//        return category.color;
-//    }
-//    return nil;
-//    
-//    
-//}
 
 #pragma mark tap gesture recognizer
 
@@ -693,20 +667,43 @@ withDescriptionText:(NSString *)descriptionText
     {
     
         _annotationView =[self.mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
-
         _annotationView = [[MKAnnotationView alloc]
-                       initWithAnnotation:annotation reuseIdentifier:viewId];
+                           initWithAnnotation:annotation reuseIdentifier:viewId];
+        [_annotationView setTintColor:_category.color];
         _annotationView.canShowCallout = NO;
-        _annotationView.opaque = NO;
         [_annotationView addSubview:[self returnImageColored]];
-        
-        
+
     }   else {
         [mapView.userLocation setTitle:@"I am here"];
     }
     return _annotationView;
+}
+
+
+-(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views   {
+    NSLog (@"ARRAYS OF ANNOTATION VIEWS: %@", views);
+    NSLog (@"[BLCDataSource sharedInstance].annotations.count : %i", [BLCDataSource sharedInstance].annotations.count);
+    for (MKAnnotationView *view in views)
+    {
+         id <MKAnnotation> mp = [view annotation];
+        for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
+        {
+            if (poi.customAnnotation == mp){
+                [view setTintColor:poi.category.color];
+            }
+        }
+    }
+
+}
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    //TO DO - Method to implement the view of the custom annotationView
+    
+    
+    
     
 }
+
 
 // helper function
 -(UIImageView *)returnImageColored
@@ -717,36 +714,12 @@ withDescriptionText:(NSString *)descriptionText
     imageView.image = image;
     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
-    [imageView setTintColor:_category.color];
-
-
-    
-//    chosenColor = nil;
     return imageView;
     
 }
 
 
 
-//
-//-(void)mapViewWillStartRenderingMap:(MKMapView *)mapView {
-//
-//}
-//-(void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
-//{
-//    [mapView addAnnotations:[self annotationsViewArray]];
-//
-//    
-//}
-
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
-{
-    //TO DO - Method to implement the view of the custom annotationView
-
-    
-    
-
-}
 
 #pragma mark CLLocationManagerDelegate Methods
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {

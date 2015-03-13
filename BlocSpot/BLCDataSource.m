@@ -34,8 +34,8 @@
         NSString *documentsDirectory = nil;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         documentsDirectory = [paths objectAtIndex:0];
-        _path = [documentsDirectory stringByAppendingPathComponent:@"point_of_interest_path.dat"] ;
-        _categoryPath = [documentsDirectory stringByAppendingPathComponent:@"categories_the_path.dat"];
+        _path = [documentsDirectory stringByAppendingPathComponent:@"poi-path.dat"] ;
+        _categoryPath = [documentsDirectory stringByAppendingPathComponent:@"category-path.dat"];
         NSLog(@"Saving annotations in %@", _path);
         NSLog(@"Saving categories in %@", _categoryPath);
 
