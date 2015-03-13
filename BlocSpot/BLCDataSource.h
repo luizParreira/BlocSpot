@@ -43,8 +43,7 @@ typedef void (^BLCSearchListCompletionBlock)(NSArray *places, NSError *error);
 -(void)removeCategory:(BLCCategories *)category;
 -(void)removePointOfInterest:(BLCPointOfInterest *)poi;
 -(void)category:(BLCCategories *)categories addPointOfInterest:(BLCPointOfInterest *)poi;
--(void)addPointOfInterest:(BLCPointOfInterest *)poi toCategoryArray:(BLCCategories *)category;
-
+-(void)addPointOfInterest:(BLCPointOfInterest *)poi ToArray:(NSMutableArray *)categoryArray;
 
 
 @end

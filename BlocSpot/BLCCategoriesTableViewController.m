@@ -508,18 +508,13 @@ static NSString *kFullTagLabel = @"heart_label_full";
         [self.categories setObject:self.categoryChosenColor forKey:@"categoryColor"];
         [self.categories setObject:[self returnImageColoredForColor:self.categoryChosenColor] forKey:@"categoryImage"];
         NSLog(@"IMAGE BEING SAVED = ** %@ **", [self returnImageColoredForColor:self.categoryChosenColor]);
-        
+        [self.delegate controllerWillSendCategoryObjectWithDictionary:self.categories];
         // Remove colors from array so they cant be repeated
-//        [self.colorsArray removeObject:self.self.categoryChosenColor];
-//        [self.colorsArraySimilar removeObject:self.similarChosenColor];
-        
+
         // pass categories dictionaries as parameters of the BLCCategories object
-        BLCCategories *category = [[BLCCategories alloc]initWithDictionary:self.categories];
-        [[BLCDataSource sharedInstance] addCategory:category];
+ 
 
 
-
-        NSLog(@"self.categoriesCreted %@", self.categoriesCreated);
         
         [self.tableView reloadData];
 
@@ -543,6 +538,7 @@ static NSString *kFullTagLabel = @"heart_label_full";
 //    NSLog(@"selected Cell content View[-1]---[ %@ ]----", _selectedCell[0] );
     
      BLCCategories *categories = _selectedCategories[0];
+    NSLog(@"CATEGORY Dictionary  ---- %@ ----", categories.pointsOfInterest);
     if (categories){
         [self.delegate category:categories];
             

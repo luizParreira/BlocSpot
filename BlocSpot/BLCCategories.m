@@ -19,6 +19,7 @@
 //        self.isSelected = categoryDictionary[@"selected"];
         self.pointsOfInterest = categoryDictionary[@"pointsOfInterest"];
         self.categoryImage = categoryDictionary[@"categoryImage"];
+//        self.categoryDictionaryAccessor = categoryDictionary;
     }
     
     return self;

@@ -30,6 +30,8 @@
 		58CECAF41A9B74F500BFC2C0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CECAF31A9B74F500BFC2C0 /* SystemConfiguration.framework */; };
 		58CECAF71A9B764900BFC2C0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CECAF61A9B764900BFC2C0 /* MapKit.framework */; };
 		58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CECAF91A9B771500BFC2C0 /* BLCMapViewController.m */; };
+		58E11EBE1AB33C8600DB6891 /* BLCCallOutInnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E11EBD1AB33C8600DB6891 /* BLCCallOutInnerView.m */; };
+		58E11EC11AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E11EC01AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m */; };
 		58F4174B1A9CF6F80087ED2A /* BLCSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4174A1A9CF6F80087ED2A /* BLCSearch.m */; };
 		58F4174E1A9CF7110087ED2A /* BLCCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4174D1A9CF7110087ED2A /* BLCCategories.m */; };
 		58F417511A9CF7A70087ED2A /* BLCPoiTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F417501A9CF7A70087ED2A /* BLCPoiTableViewController.m */; };
@@ -95,6 +97,10 @@
 		58CECAF61A9B764900BFC2C0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		58CECAF81A9B771500BFC2C0 /* BLCMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCMapViewController.h; sourceTree = "<group>"; };
 		58CECAF91A9B771500BFC2C0 /* BLCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCMapViewController.m; sourceTree = "<group>"; };
+		58E11EBC1AB33C8600DB6891 /* BLCCallOutInnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCallOutInnerView.h; sourceTree = "<group>"; };
+		58E11EBD1AB33C8600DB6891 /* BLCCallOutInnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCallOutInnerView.m; sourceTree = "<group>"; };
+		58E11EBF1AB3472E00DB6891 /* BLCCustomCallOutAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCallOutAnnotation.h; sourceTree = "<group>"; };
+		58E11EC01AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomCallOutAnnotation.m; sourceTree = "<group>"; };
 		58F417491A9CF6F80087ED2A /* BLCSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCSearch.h; sourceTree = "<group>"; };
 		58F4174A1A9CF6F80087ED2A /* BLCSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCSearch.m; sourceTree = "<group>"; };
 		58F4174C1A9CF7110087ED2A /* BLCCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategories.h; sourceTree = "<group>"; };
@@ -216,6 +222,8 @@
 				58F4174D1A9CF7110087ED2A /* BLCCategories.m */,
 				5889BA851A9ECCBD00B97A27 /* BLCCustomAnnotation.h */,
 				5889BA861A9ECCBD00B97A27 /* BLCCustomAnnotation.m */,
+				58E11EBF1AB3472E00DB6891 /* BLCCustomCallOutAnnotation.h */,
+				58E11EC01AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -233,6 +241,8 @@
 				585F0F931AA7B61900FADFD6 /* BLCColorsCollectionCell.m */,
 				5891B7DF1AAD3D43005D4046 /* BLCCustomCallOutView.h */,
 				5891B7E01AAD3D43005D4046 /* BLCCustomCallOutView.m */,
+				58E11EBC1AB33C8600DB6891 /* BLCCallOutInnerView.h */,
+				58E11EBD1AB33C8600DB6891 /* BLCCallOutInnerView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -467,9 +477,11 @@
 				58FE8D2F1AA371AB007E54DC /* JVFloatLabeledTextView.m in Sources */,
 				582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */,
 				5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */,
+				58E11EBE1AB33C8600DB6891 /* BLCCallOutInnerView.m in Sources */,
 				58A536731A9A99F500113151 /* AppDelegate.m in Sources */,
 				58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */,
 				58F417571A9CF9B70087ED2A /* BLCPoiTableViewCell.m in Sources */,
+				58E11EC11AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m in Sources */,
 				582D39CE1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m in Sources */,
 				582D39D11AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m in Sources */,
 				58FE8D301AA371AB007E54DC /* NSString+TextDirectionality.m in Sources */,

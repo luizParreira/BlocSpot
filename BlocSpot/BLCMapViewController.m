@@ -11,6 +11,7 @@
 #import "BLCCustomCreateAnnotationsView.h"
 #import "CustomIOS7AlertView.h"
 #import "BLCCustomCallOutView.h"
+#import "BLCCallOutInnerView.h"
 
 #import "BLCPoiTableViewController.h"
 #import "BLCSearchViewController.h"
@@ -86,6 +87,8 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 
 @property (nonatomic, strong)UIColor *chosenColor;
 
+@property (nonatomic, strong) NSMutableArray *poiTempArray;
+@property (nonatomic, strong) NSMutableDictionary *categoryDic;
 
 
 
@@ -469,28 +472,54 @@ withDescriptionText:(NSString *)descriptionText
     
     [self.params setObject:titleText forKey:@"placeName"];
     [self.params setObject:descriptionText forKey:@"notes"];
-    
 //    NSLog(@"self.params before initializing POI [%@]", self.params);
     BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc]initWithCoordinate:_coords];
     [self.params setObject:annotation forKey:@"annotation"];
     
     self.poi = [[BLCPointOfInterest alloc] initWithDictionary:self.params];
+    
     NSLog(@"SELF.POI *** %@ ***", self.poi);
     [[BLCDataSource sharedInstance] addPointOfInterest:self.poi];
-
 
 
     [self setState:BLCMapViewControllerStateMapContent animated:YES];
  
     [self.mapView addAnnotation:annotation];
+    BLCCategories *categories = self.params[@"category"];
+    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi ToArray:categories.pointsOfInterest];
+
     
     
     // set the title lablel of the custom view back to its real title
     self.createAnnotationView.titleLabel.attributedText = [self titleLabelString];
     
-    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi toCategoryArray:self.poi.category];
 
 
+
+
+}
+//-(void)addPointOfInterest:(BLCPointOfInterest *)poi ToArray:(NSMutableArray *)categoryArray
+//{
+//    _poi = poi;
+//    
+//    [categoryArray addObject:poi];
+//    self.poiTempArray = [NSMutableArray new];
+//    [self.categoryDic setObject:categoryArray forKey:@"pointsOfInterest"];
+//    
+//    BLCCategories *category = [[BLCCategories alloc]initWithDictionary:self.categoryDic];
+//
+//    NSLog(@"CATEGORY.POINTSOFINTEREST *** %@ ***", categoryArray);
+//    
+//}
+
+
+-(void)controllerWillSendCategoryObjectWithDictionary:(NSDictionary *)dic {
+    NSLog(@"delegate was fired");
+//    [mutDic setObject:_poiTempArray forKey:@"pointsOfInterest"];
+    BLCCategories *category = [[BLCCategories alloc]initWithDictionary:dic];
+    [[BLCDataSource sharedInstance] addCategory:category];
+
+    
 
 }
 -(void)customViewDidPressAddCategoriesView:(UIView *)categoryView
@@ -665,13 +694,22 @@ withDescriptionText:(NSString *)descriptionText
     if([annotation isKindOfClass:[BLCCustomAnnotation class]])
 
     {
-    
+
         _annotationView =[self.mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
+        if (!_annotationView){
         _annotationView = [[MKAnnotationView alloc]
                            initWithAnnotation:annotation reuseIdentifier:viewId];
+        }else {
+            _annotationView.annotation = annotation;
+        }
+        _annotationView.enabled = YES;
         [_annotationView setTintColor:_category.color];
-        _annotationView.canShowCallout = NO;
+//        _annotationView.canShowCallout = YES;
+//        _annotationView
+//        _annotationView.calloutOffset =0;
         [_annotationView addSubview:[self returnImageColored]];
+ 
+
 
     }   else {
         [mapView.userLocation setTitle:@"I am here"];
@@ -681,9 +719,7 @@ withDescriptionText:(NSString *)descriptionText
 
 
 -(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views   {
-    NSLog (@"ARRAYS OF ANNOTATION VIEWS: %@", views);
-    NSLog (@"[BLCDataSource sharedInstance].annotations.count : %i", [BLCDataSource sharedInstance].annotations.count);
-    for (MKAnnotationView *view in views)
+     for (MKAnnotationView *view in views)
     {
          id <MKAnnotation> mp = [view annotation];
         for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
@@ -695,13 +731,31 @@ withDescriptionText:(NSString *)descriptionText
     }
 
 }
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    //TO DO - Method to implement the view of the custom annotationView
-    
-    
-    
-    
+    if (![view.annotation isKindOfClass:[MKUserLocation class]])
+    {
+        BLCCallOutInnerView *innerView = [[BLCCallOutInnerView alloc]initForAnnotation:view.annotation];
+
+        [mapView addAnnotation:innerView.customAnnotation];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [mapView selectAnnotation:innerView.customAnnotation animated:YES];
+        });
+        // TODO: Set the outlets of the xib
+        innerView.categoryLabel.text = @"RESTAURANT TEST";
+        innerView.descriptionLabel.text = @"Testing.......Testing.......Testing.......Testing.......Testing.......";
+        
+//        [view addSubview:innerView];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    for (UIView *subView in view.subviews)
+    {
+        [subView removeFromSuperview];
+    }
 }
 
 

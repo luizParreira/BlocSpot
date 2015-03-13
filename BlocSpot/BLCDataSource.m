@@ -111,11 +111,10 @@
     
 }
 
--(void)addPointOfInterest:(BLCPointOfInterest *)poi toCategoryArray:(BLCCategories *)category
+-(void)addPointOfInterest:(BLCPointOfInterest *)poi ToArray:(BLCCategories *)categoryArray
 {
-    [category.pointsOfInterest addObject:poi];
-    NSLog(@"CATEGORY.POINTSOFINTEREST *** %@ ***", category.pointsOfInterest);
-
+    [categoryArray.pointsOfInterest addObject:poi];
+    NSLog(@"CATEGORY.POINTSOFINTEREST *** %@ ***", categoryArray);
     
 }
 

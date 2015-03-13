@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, BLCCategoriesState) {
 @property (nonatomic, strong) NSMutableArray *colorList;
 @property (nonatomic, strong) UIImageView *categoryImage;
 
-
+@property (nonatomic, strong) NSDictionary *categoryDictionaryAccessor;
 
 -(instancetype)initWithDictionary:(NSDictionary *)categoryDictionary;
 
