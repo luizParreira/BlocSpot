@@ -15,35 +15,31 @@
 typedef void (^BLCSearchListCompletionBlock)(NSArray *places, NSError *error);
 
 @interface BLCDataSource : NSObject {
-    NSString *_path;
-    NSString *_categoryPath;
-    NSMutableArray *_annotations;
-    NSMutableArray *_categories;
-    NSMutableArray *_categoryPOI;
-
-
+    NSString *_annotationsPath;
+    NSString *_categoriesPath;
 }
 
 +(instancetype) sharedInstance;
 
-@property (nonatomic, strong) NSString *path;
+
+@property (nonatomic, weak, readonly) NSArray *annotations;
+@property (nonatomic, weak, readonly) NSArray *categories;
 
 
 
 // To be implemented on the data regarding the list of venues
 +(void)fetchPlacesWithName:(NSString *)searchTerm withLocationCoordinate:(CLLocationCoordinate2D *)coordinate completion:(BLCSearchListCompletionBlock)completionHandler;
 
--(NSArray *)annotations;
--(NSArray *)categories;
--(NSArray *)categoryPOI;
 
+// KVO METHODS
+-(void)deleteCategories:(BLCCategories *)category;
+-(void)addCategories:(BLCCategories *)category;
 
--(void)addPointOfInterest:(BLCPointOfInterest *)poi;
--(void)addCategory:(BLCCategories *)categories;
--(void)removeCategory:(BLCCategories *)category;
--(void)removePointOfInterest:(BLCPointOfInterest *)poi;
--(void)category:(BLCCategories *)categories addPointOfInterest:(BLCPointOfInterest *)poi;
--(void)addPointOfInterest:(BLCPointOfInterest *)poi ToArray:(NSMutableArray *)categoryArray;
+-(void)addPoi:(BLCPointOfInterest *)poi;
+-(void) deletePointOfInterest:(BLCPointOfInterest *)poi;
+-(void)replaceAnnotation:(BLCPointOfInterest *)poi withOtherPOI:(BLCPointOfInterest *)otherPOI;
+
+-(void)toggleVisitedOnPOI:(BLCPointOfInterest *)poi;
 
 
 @end

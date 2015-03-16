@@ -8,16 +8,33 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+
 #import "BLCCustomAnnotation.h"
+#import "BLCCategoryButton.h"
+#import "BLCPointOfInterest.h"
 
+@class BLCCallOutInnerView;
 
+@protocol BLCCallOutInnerViewDelegate <NSObject>
+
+-(void)calloutView:(BLCCallOutInnerView *)view didPressVisitedButton:(BLCCategoryButton *)button ;
+
+@end
 
 @interface BLCCallOutInnerView : UIView
+
+@property (nonatomic, strong) NSObject <BLCCallOutInnerViewDelegate> *delegate;
 @property (nonatomic, strong) UILabel *descriptionLabel;
 @property (nonatomic, strong) UILabel *categoryLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIImageView *visitIndicatorImage;
+@property (nonatomic, strong) BLCCategoryButton *visitIndicatorButton;
 
-@property (nonatomic, strong) id<MKAnnotation> customAnnotation;
+//@property (nonatomic, assign) BLCVisitButtonSelected *buttonState;
+
+@property (nonatomic, strong) BLCPointOfInterest *poi;
 
 
--(id)initForAnnotation:(id<MKAnnotation>)annotation;
+
+-(void)setVisitIndicatorImage:(UIImageView *)visitIndicatorImage withColor:(UIColor *)color;
 @end

@@ -11,12 +11,14 @@
 #import "BLCPoiTableViewCell.h"
 
 #import "BLCPointOfInterest.h"
+#import "BLCDataSource.h"
+
 
 //UI stuff
 #import "FlatUIKit.h"
 
 
-@interface BLCPoiTableViewController () <UISearchBarDelegate, UISearchControllerDelegate>
+@interface BLCPoiTableViewController () <UISearchBarDelegate, UISearchControllerDelegate, BLCPoiTableViewCellDelegate>
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) BLCMapViewController *mapVC;
@@ -33,7 +35,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [[BLCDataSource sharedInstance] addObserver:self forKeyPath:@"annotations" options:0 context:nil];
+//    [[BLCDataSource sharedInstance] addObserver:self forKeyPath:@"categories" options:0 context:nil];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -52,6 +56,12 @@
     [self addRightBarButttons];
     [self setUpSearchBar];
     
+}
+-(void)dealloc
+{
+    [[BLCDataSource sharedInstance] removeObserver:self forKeyPath:@"annotations"];
+//    [[BLCDataSource sharedInstance] removeObserver:self forKeyPath:@"categories"];
+
 }
 
 - (void)setUpSearchBar {
@@ -88,6 +98,67 @@
     
 }
 
+#pragma mark Attributed Strings
+
+-(NSAttributedString *)placeNameStringWithString:(NSString *)string{
+    
+    CGFloat placeNameFontSize = 18;
+    
+    NSMutableParagraphStyle *mutableParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    mutableParagraphStyle.headIndent = 20.0;
+    mutableParagraphStyle.firstLineHeadIndent = 10.0;
+    mutableParagraphStyle.tailIndent = -20.0;
+    mutableParagraphStyle.paragraphSpacingBefore = 5;
+    if (string)
+    {
+        
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],NSParagraphStyleAttributeName : mutableParagraphStyle}];
+    
+    NSRange stringRange = [string rangeOfString:string];
+    [mutAttString addAttribute:NSForegroundColorAttributeName value:[UIColor midnightBlueColor] range:stringRange];
+    return mutAttString;
+    } else
+    {
+        return nil;
+    }
+
+}
+
+
+-(NSAttributedString *)notesAboutPlaceStringWithString:(NSString *)string{
+    
+    
+    NSString *baseString = string;
+    NSMutableParagraphStyle *mutableParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    mutableParagraphStyle.headIndent = 20.0;
+    mutableParagraphStyle.firstLineHeadIndent = 20.0;
+    mutableParagraphStyle.tailIndent = -20.0;
+    mutableParagraphStyle.paragraphSpacingBefore = 5;
+    if (string){
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleBody],NSParagraphStyleAttributeName : mutableParagraphStyle }];
+    NSRange stringRange = [baseString rangeOfString:baseString];
+    [mutAttString addAttribute:NSForegroundColorAttributeName value:[UIColor midnightBlueColor] range:stringRange];
+    
+    return mutAttString;
+    }else return nil;
+    
+}
+
+
+-(NSAttributedString *)howFarIsItString {
+
+    NSString *baseString = @"< 1 min.";
+    
+    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] }];
+    NSRange stringRange = [baseString rangeOfString:baseString];
+    [mutAttString addAttribute:NSForegroundColorAttributeName value:[UIColor midnightBlueColor] range:stringRange];
+    
+    return mutAttString;
+    
+}
+
+
+
 -(NSAttributedString *)titleLabelString  {
     
     NSString *baseString = @"BlocSpot";
@@ -97,6 +168,8 @@
     return mutAttString;
     
 }
+
+
 -(void) addRightBarButttons {
     
     UIImage *searchImage =[UIImage imageNamed:@"search"];
@@ -150,18 +223,43 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 5;
+    return [BLCDataSource sharedInstance].annotations.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BLCPoiTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Points" forIndexPath:indexPath];
     
-    // Configure the cell...
+    BLCPointOfInterest *poi = [BLCDataSource sharedInstance].annotations[indexPath.row];
+    
+    cell.nameOfPlace.attributedText = [self placeNameStringWithString:poi.placeName];
+    cell.notesAboutPlace.attributedText = [self notesAboutPlaceStringWithString:poi.notes];
+    cell.howFarIsIt.attributedText = [self howFarIsItString];
+//    [cell.categoryButton setImage:[self returnImageColored].image forState:UIControlStateNormal];
+    [cell.categoryButton setTintColor:poi.category.color];
+
+    if ([poi.visited isEqualToString:@"1"]){
+            cell.categoryButton.vistButtonState = BLCVisitButtonSelectedYES;
+            
+    } else
+    {
+        cell.categoryButton.vistButtonState = BLCVisitButtonSelectedNO;
+    }
+    
+//    if (cell.state == BLC)
+
     
     return cell;
 }
-
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        BLCPointOfInterest *poi = [BLCDataSource sharedInstance].annotations[indexPath.row];
+        [[BLCDataSource sharedInstance] deletePointOfInterest:poi];
+    }
+}
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //BLCPointOfInterest *POI = [[BLCPointOfInterest alloc]init];
@@ -169,7 +267,43 @@
     return 100;
 }
 
+// HELPER FUNCTION
+-(UIImageView *)returnImageColored
+{
+    UIImageView *imageView = [UIImageView new];
+    UIImage *image = [UIImage imageNamed:@"heart"];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.image = image;
+    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    return imageView;
+    
+}
 
+
+#pragma mark BLCPoiTableViewCellDelegate
+
+-(void)cellDidPressOnButton:(BLCPoiTableViewCell *)cell {
+    
+    
+    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations){
+        
+        if (poi.customAnnotation == cell.customAnnotation){
+            if ([poi.visited isEqualToString:@"0"]) {
+                poi.visited = @"1";
+                cell.categoryButton.vistButtonState = BLCVisitButtonSelectedYES;
+                
+            }else
+            {
+                poi.visited = @"0";
+                cell.categoryButton.vistButtonState = BLCVisitButtonSelectedNO;
+                
+            }
+        }
+    }
+
+    
+}
 
 
 #pragma mark UITabBar button actions
@@ -229,6 +363,48 @@
     
 }
 
+#pragma mark Key-Value Observing
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == [BLCDataSource sharedInstance] && ([keyPath isEqualToString:@"annotations"])) {
+        // Nothing… YET
+        int kindOfChange = [change[NSKeyValueChangeKindKey] intValue];
+        
+        if (kindOfChange == NSKeyValueChangeSetting) {
+            // Someone set a brand new images array
+            [self.tableView reloadData];
+        } else if (kindOfChange == NSKeyValueChangeInsertion ||
+                   kindOfChange == NSKeyValueChangeRemoval ||
+                   kindOfChange == NSKeyValueChangeReplacement) {
+            // We have an incremental change: inserted, deleted, or replaced images
+            
+            // Get a list of the index (or indices) that changed
+            NSIndexSet *indexSetOfChanges = change[NSKeyValueChangeIndexesKey];
+            
+            // Convert this NSIndexSet to an NSArray of NSIndexPaths (which is what the table view animation methods require)
+            NSMutableArray *indexPathsThatChanged = [NSMutableArray array];
+            [indexSetOfChanges enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:idx inSection:0];
+                [indexPathsThatChanged addObject:newIndexPath];
+            }];
+            
+            // Call `beginUpdates` to tell the table view we're about to make changes
+            [self.tableView beginUpdates];
+            
+            // Tell the table view what the changes are
+            if (kindOfChange == NSKeyValueChangeInsertion) {
+                [self.tableView insertRowsAtIndexPaths:indexPathsThatChanged withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else if (kindOfChange == NSKeyValueChangeRemoval) {
+                [self.tableView deleteRowsAtIndexPaths:indexPathsThatChanged withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else if (kindOfChange == NSKeyValueChangeReplacement) {
+                [self.tableView reloadRowsAtIndexPaths:indexPathsThatChanged withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            
+            // Tell the table view that we're done telling it about changes, and to complete the animation
+            [self.tableView endUpdates];
+        }
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.

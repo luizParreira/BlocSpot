@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5811643B1AA2577200D2D596 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */; };
 		582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582724CC1AA1042A0073BE00 /* SMCalloutView.m */; };
+		582792D11AB5053600315F18 /* BLCCategoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 582792D01AB5053600315F18 /* BLCCategoryButton.m */; };
 		582D39CE1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */; };
 		582D39D11AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 582D39D01AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m */; };
 		5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */; };
@@ -58,6 +59,8 @@
 		5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 		582724CB1AA1042A0073BE00 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
 		582724CC1AA1042A0073BE00 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
+		582792CF1AB5053600315F18 /* BLCCategoryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategoryButton.h; sourceTree = "<group>"; };
+		582792D01AB5053600315F18 /* BLCCategoryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategoryButton.m; sourceTree = "<group>"; };
 		582D39CC1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategoriesTableViewController.h; sourceTree = "<group>"; };
 		582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategoriesTableViewController.m; sourceTree = "<group>"; };
 		582D39CF1AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategoryTaleViewCell.h; sourceTree = "<group>"; };
@@ -243,6 +246,8 @@
 				5891B7E01AAD3D43005D4046 /* BLCCustomCallOutView.m */,
 				58E11EBC1AB33C8600DB6891 /* BLCCallOutInnerView.h */,
 				58E11EBD1AB33C8600DB6891 /* BLCCallOutInnerView.m */,
+				582792CF1AB5053600315F18 /* BLCCategoryButton.h */,
+				582792D01AB5053600315F18 /* BLCCategoryButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -477,6 +482,7 @@
 				58FE8D2F1AA371AB007E54DC /* JVFloatLabeledTextView.m in Sources */,
 				582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */,
 				5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */,
+				582792D11AB5053600315F18 /* BLCCategoryButton.m in Sources */,
 				58E11EBE1AB33C8600DB6891 /* BLCCallOutInnerView.m in Sources */,
 				58A536731A9A99F500113151 /* AppDelegate.m in Sources */,
 				58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */,

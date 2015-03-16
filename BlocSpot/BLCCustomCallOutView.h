@@ -40,6 +40,6 @@
 
 @property (nonatomic,retain)UIView *contentView;
 
-
+-(void)dismiss;
 
 @end

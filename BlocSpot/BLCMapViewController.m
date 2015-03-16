@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 };
 
 
-@interface BLCMapViewController () <MKMapViewDelegate, UIViewControllerTransitioningDelegate,UISearchBarDelegate, UISearchControllerDelegate, UITabBarControllerDelegate, UIGestureRecognizerDelegate, WYPopoverControllerDelegate, BLCCustomCreateAnnotationsViewDelegate, BLCCategoriesTableViewControllerDelegate  > {
+@interface BLCMapViewController () <MKMapViewDelegate, UIViewControllerTransitioningDelegate,UISearchBarDelegate, UISearchControllerDelegate, UITabBarControllerDelegate, UIGestureRecognizerDelegate, WYPopoverControllerDelegate, BLCCustomCreateAnnotationsViewDelegate, BLCCategoriesTableViewControllerDelegate, SMCalloutViewDelegate, BLCCallOutInnerViewDelegate  > {
     
     BLCCustomCallOutView *_customCallOutView;
 }
@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger, BLCMapViewControllerState) {
 @property (nonatomic, strong) BLCCategoriesTableViewController *categoryVCpopup;
 
 @property (nonatomic, strong) WYPopoverController *popover;
+@property (nonatomic, strong) SMCalloutView *calloutView;
+
 
 @property (nonatomic, strong) NSMutableArray *matchingItems;
 @property (nonatomic, strong) UISearchController *searchController;
@@ -107,7 +109,8 @@ static NSString *viewId = @"HeartAnnotation";
 }
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
+
+
     // set the tab bar color
     self.tablePoiVC =[[ BLCPoiTableViewController alloc]init];
     self.navigationItem.hidesBackButton = YES;
@@ -180,6 +183,11 @@ static NSString *viewId = @"HeartAnnotation";
     if(!self.params){
         self.params = [NSMutableDictionary new];
     }
+
+//    for (BLCCategories *category in [BLCDataSource sharedInstance].categories)
+//    {
+//        NSLog(@"Points of Interests array %@", category.pointsOfInterest);
+//    }
 
 
 }
@@ -456,6 +464,9 @@ static NSString *viewId = @"HeartAnnotation";
 
 -(void)dealloc {
     self.locationManager = nil;
+
+
+
 //    _coords = nil;
 }
 
@@ -468,60 +479,61 @@ didPressDoneButton:(FUIButton *)button
 withDescriptionText:(NSString *)descriptionText
 //withCategory:(BLCCategories *)category
 {
-    
+//    BLCCategoryButton *catButton = [[BLCCategoryButton alloc]init];
     
     [self.params setObject:titleText forKey:@"placeName"];
     [self.params setObject:descriptionText forKey:@"notes"];
+    [self.params setObject:self forKey:NSStringFromSelector(@selector(buttonState))];
 //    NSLog(@"self.params before initializing POI [%@]", self.params);
     BLCCustomAnnotation *annotation = [[BLCCustomAnnotation alloc]initWithCoordinate:_coords];
     [self.params setObject:annotation forKey:@"annotation"];
-    
     self.poi = [[BLCPointOfInterest alloc] initWithDictionary:self.params];
     
     NSLog(@"SELF.POI *** %@ ***", self.poi);
-    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi];
+    [[BLCDataSource sharedInstance] addPoi:self.poi];
 
 
     [self setState:BLCMapViewControllerStateMapContent animated:YES];
  
     [self.mapView addAnnotation:annotation];
-    BLCCategories *categories = self.params[@"category"];
-    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi ToArray:categories.pointsOfInterest];
+    
+//    BLCCategories *categories = self.params[@"category"];
+//    [categories.pointsOfInterest addObject:self.poi];
+    
+//    [[BLCDataSource sharedInstance] addPointOfInterest:self.poi ToArray:categories.pointsOfInterest];
 
     
     
     // set the title lablel of the custom view back to its real title
     self.createAnnotationView.titleLabel.attributedText = [self titleLabelString];
     
-
-
-
-
-}
-//-(void)addPointOfInterest:(BLCPointOfInterest *)poi ToArray:(NSMutableArray *)categoryArray
-//{
-//    _poi = poi;
-//    
-//    [categoryArray addObject:poi];
-//    self.poiTempArray = [NSMutableArray new];
-//    [self.categoryDic setObject:categoryArray forKey:@"pointsOfInterest"];
-//    
+//    self.categoryDic[@"pointsOfInterest"] = tempMutArray;
 //    BLCCategories *category = [[BLCCategories alloc]initWithDictionary:self.categoryDic];
+//    for (BLCCategories *category in [BLCDataSource sharedInstance].categories)
+//    {
+//        if (categories == category)
+//        {
+//            [category.pointsOfInterest addObject:self.poi];
+////            self.categoryDic[@"pointsOfInterest"] = category.pointsOfInterest;
 //
-//    NSLog(@"CATEGORY.POINTSOFINTEREST *** %@ ***", categoryArray);
-//    
-//}
+//        }
+//    }
 
-
--(void)controllerWillSendCategoryObjectWithDictionary:(NSDictionary *)dic {
-    NSLog(@"delegate was fired");
-//    [mutDic setObject:_poiTempArray forKey:@"pointsOfInterest"];
-    BLCCategories *category = [[BLCCategories alloc]initWithDictionary:dic];
-    [[BLCDataSource sharedInstance] addCategory:category];
-
-    
 
 }
+
+//-(void)controllerWillSendCategoryObjectWithDictionary:(NSMutableDictionary *)dic {
+//    NSLog(@"delegate was fired");
+//    self.categoryDic = [NSMutableDictionary new];
+//    self.categoryDic = dic;
+//
+//
+////    [mutDic setObject:_poiTempArray forKey:@"pointsOfInterest"];
+//
+//
+//    
+//
+//}
 -(void)customViewDidPressAddCategoriesView:(UIView *)categoryView
 {
     NSLog(@"tap being fired DELEGATE");
@@ -561,7 +573,7 @@ withDescriptionText:(NSString *)descriptionText
 
     
     self.createAnnotationView.titleLabel.attributedText = [self.createAnnotationView titleLabelStringWithCategory:categories.categoryName withColor:categories.color];
-\
+
 }
 
 #pragma mark tap gesture recognizer
@@ -688,6 +700,9 @@ withDescriptionText:(NSString *)descriptionText
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
+    [mapView.userLocation setTitle:@"I am here"];
+    
+    BLCCustomCallOutView *annotationView  = (BLCCustomCallOutView *)[mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
 
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
@@ -695,36 +710,33 @@ withDescriptionText:(NSString *)descriptionText
 
     {
 
-        _annotationView =[self.mapView dequeueReusableAnnotationViewWithIdentifier:viewId];
-        if (!_annotationView){
-        _annotationView = [[MKAnnotationView alloc]
+
+        if (!annotationView){
+        annotationView = [[BLCCustomCallOutView alloc]
                            initWithAnnotation:annotation reuseIdentifier:viewId];
         }else {
-            _annotationView.annotation = annotation;
+            annotationView.annotation = annotation;
         }
-        _annotationView.enabled = YES;
-        [_annotationView setTintColor:_category.color];
-//        _annotationView.canShowCallout = YES;
+        annotationView.enabled = YES;
+        [annotationView setTintColor:_category.color];
+        annotationView.canShowCallout = NO;
 //        _annotationView
 //        _annotationView.calloutOffset =0;
-        [_annotationView addSubview:[self returnImageColored]];
+        [annotationView addSubview:[self returnImageColored]];
  
-
-
-    }   else {
-        [mapView.userLocation setTitle:@"I am here"];
+    
     }
-    return _annotationView;
+    return annotationView;
 }
 
 
 -(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views   {
      for (MKAnnotationView *view in views)
     {
-         id <MKAnnotation> mp = [view annotation];
+         id <MKAnnotation> annotation = [view annotation];
         for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
         {
-            if (poi.customAnnotation == mp){
+            if (poi.customAnnotation == annotation){
                 [view setTintColor:poi.category.color];
             }
         }
@@ -734,29 +746,52 @@ withDescriptionText:(NSString *)descriptionText
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if (![view.annotation isKindOfClass:[MKUserLocation class]])
-    {
-        BLCCallOutInnerView *innerView = [[BLCCallOutInnerView alloc]initForAnnotation:view.annotation];
+    NSLog(@"ViewWidth %f", CGRectGetWidth(self.view.bounds));
 
-        [mapView addAnnotation:innerView.customAnnotation];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [mapView selectAnnotation:innerView.customAnnotation animated:YES];
-        });
-        // TODO: Set the outlets of the xib
-        innerView.categoryLabel.text = @"RESTAURANT TEST";
-        innerView.descriptionLabel.text = @"Testing.......Testing.......Testing.......Testing.......Testing.......";
-        
-//        [view addSubview:innerView];
+    mapView.scrollEnabled =NO;
+
+    
+//    [mapView setCenter:view.center];
+////        [mapView addAnnotation:innerView.customAnnotation];
+//            [mapView selectAnnotation:innerView.customAnnotation animated:YES];
+
+    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
+    {
+        if (poi.customAnnotation == view.annotation){
+            BLCCallOutInnerView *innerView = [[BLCCallOutInnerView alloc]init];
+            innerView.delegate = self;
+            innerView.poi  = poi;
+            //            innerView.visitIndicatorButton.vistButtonState = poi.buttonState;
+            innerView.frame = CGRectMake(0, 0, 280, 188);
+            self.calloutView = [[SMCalloutView alloc]init];
+            self.calloutView.contentView =innerView; ;
+            
+//            // setting the attributes of the Labels present on the view
+//            innerView.titleLabel.attributedText = [self calloutTtitleStringWithString:poi.placeName andColor:[UIColor midnightBlueColor]];
+//            innerView.descriptionLabel.attributedText = [self descriptionStringWithString:poi.notes];
+//            innerView.categoryLabel.attributedText = [self categoryLabelAttributedStringForString:poi.category.categoryName andColor:poi.category.color];
+            
+//            [[self returnImageColored] setTintColor:poi.category.color];
+//            [innerView.visitIndicatorButton setImage:[self returnImageColored].image forState:UIControlStateNormal];
+//            [innerView.visitIndicatorButton setTintColor:poi.category.color];
+            
+            NSLog(@"poi.buttonState coming from the database %i", poi.buttonState);
+            
+            [self.calloutView presentCalloutFromRect:view.frame inView:mapView constrainedToView:mapView permittedArrowDirections:SMCalloutArrowDirectionAny animated:YES];
+        }
+
+
+    
     }
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
 {
-    for (UIView *subView in view.subviews)
-    {
-        [subView removeFromSuperview];
-    }
+    mapView.scrollEnabled = YES;
+    [self.calloutView dismissCalloutAnimated:YES];
+    
 }
+
 
 
 // helper function
@@ -772,8 +807,46 @@ withDescriptionText:(NSString *)descriptionText
     
 }
 
-
-
+#pragma mark NSAttributedStrings
+//- (NSAttributedString *)categoryLabelAttributedStringForString:(NSString*)string andColor:(UIColor *)color{
+//    NSString *baseString = NSLocalizedString([string uppercaseString], @"Label of category");
+//    NSRange range = [baseString rangeOfString:baseString];
+//    
+//    NSMutableAttributedString *baseAttributedString = [[NSMutableAttributedString alloc] initWithString:baseString];
+//    
+//    [baseAttributedString addAttribute:NSFontAttributeName value:[UIFont boldFlatFontOfSize:16] range:range];
+//    [baseAttributedString addAttribute:NSKernAttributeName value:@1.3 range:range];
+//    [baseAttributedString addAttribute:NSForegroundColorAttributeName value:color range:range];
+//    return baseAttributedString;
+//    
+//    
+//}
+//
+//-(NSAttributedString *)calloutTtitleStringWithString:(NSString *)string andColor:(UIColor *)color  {
+//    
+//    NSString *baseString =string;
+//    
+//    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSForegroundColorAttributeName:color,NSFontAttributeName:[UIFont boldFlatFontOfSize:20]}];
+//    
+//    return mutAttString;
+//    
+//}
+//
+//-(NSAttributedString *)descriptionStringWithString:(NSString *)string  {
+//    
+//    NSString *baseString = string;
+//    NSMutableParagraphStyle *mutableParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+//    mutableParagraphStyle.headIndent = 20.0;
+//    mutableParagraphStyle.firstLineHeadIndent = 20.0;
+//    mutableParagraphStyle.tailIndent = -20.0;
+//    mutableParagraphStyle.paragraphSpacingBefore = 5;
+//    
+//    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString
+//                                                                                     attributes:@{NSForegroundColorAttributeName:[UIColor midnightBlueColor],NSFontAttributeName:[UIFont flatFontOfSize:16],NSParagraphStyleAttributeName : mutableParagraphStyle}];
+//    
+//    return mutAttString;
+//    
+//}
 
 #pragma mark CLLocationManagerDelegate Methods
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
@@ -784,6 +857,64 @@ withDescriptionText:(NSString *)descriptionText
 
 }
 
+#pragma mark BLCCallOutInnerViewDelegate
+
+-(void)calloutView:(BLCCallOutInnerView *)view didPressVisitedButton:(BLCCategoryButton *)button 
+{
+    if (view.visitIndicatorButton.vistButtonState == BLCVisitButtonSelectedYES)
+    {
+        [[BLCDataSource sharedInstance] toggleVisitedOnPOI:view.poi];
+        
+        view.visitIndicatorButton.vistButtonState = BLCVisitButtonSelectedNO;
+    } else
+    {
+        [[BLCDataSource sharedInstance] toggleVisitedOnPOI:view.poi];
+        view.visitIndicatorButton.vistButtonState = BLCVisitButtonSelectedYES;
+    }
+    
+
+    
+//    for (BLCPointOfInterest *poi in [BLCDataSource sharedInstance].annotations)
+//    {
+//        NSLog(@"POI.VISITED IN LOOP %@",poi.visited);
+//        if (poi.customAnnotation == view.customAnnotation)
+//        {
+////            if (poi.visited)
+////            {
+//                if ([poi.visited isEqualToString:@"0"])
+//                {
+////                    BLCPointOfInterest *newPOI = [[BLCPointOfInterest alloc]initWithDictionary:self.params];
+//                    self.params[@"visited"] = @"1";
+//                    BLCPointOfInterest *POI = [[BLCPointOfInterest alloc]initWithDictionary:self.params];
+//                    [[BLCDataSource sharedInstance] replaceAnnotation:poi withOtherPOI:POI];
+//                
+//                    view.visitIndicatorButton.vistButtonState = BLCVisitButtonSelectedYES;
+//                
+////                    [self.mapView reloadInputViews];
+//                    NSLog(@" OLD POI.VISITED INSIDE IF STATEMENT IF NOT VISITED %@",poi.visited);
+//
+////                    NSLog(@"***new POI.VISITED INSIDE IF STATEMENT IF NOT VISITED %@",newPOI.visited);
+//                }if ([poi.visited isEqualToString:@"1"])
+//                {
+//
+////                    [poi.visited setValue:@"0" forKey:@"visited"];
+//                    self.params[@"visited"] = @"0";
+//                    BLCPointOfInterest *POI = [[BLCPointOfInterest alloc]initWithDictionary:self.params];
+////                    BLCPointOfInterest *newPOI = [[BLCPointOfInterest alloc]initWithDictionary:self.params];
+//                    [[BLCDataSource sharedInstance] replaceAnnotation:poi withOtherPOI:POI];
+//
+//                    view.visitIndicatorButton.vistButtonState = BLCVisitButtonSelectedNO;
+//
+////                    [self.mapView reloadInputViews];
+//                    NSLog(@" OLD POI.VISITED INSIDE IF STATEMENT IF NOT VISITED %@",poi.visited);
+//
+////                    NSLog(@"*** NEW POI.VISITED INSIDE IF STATEMENT IF VISITED %@",newPOI.visited);
+//
+//                }
+//            }
+//////        }
+//    }
+}
 
 
 

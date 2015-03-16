@@ -20,7 +20,7 @@
         self.latitude = self.coordinate.latitude;
         self.longitude = self.coordinate.longitude;
 //        self.backgroundColor = color;
-
+        self.title = @"TEST";
         
     }
     return self;

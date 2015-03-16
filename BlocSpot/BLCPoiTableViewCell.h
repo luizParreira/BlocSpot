@@ -8,11 +8,29 @@
 
 #import <UIKit/UIKit.h>
 #import "BLCPointOfInterest.h"
+#import "BLCCategoryButton.h"
+#import <MapKit/MapKit.h>
+
+@class  BLCPoiTableViewCell;
+
+@protocol BLCPoiTableViewCellDelegate <NSObject>
+
+-(void)cellDidPressOnButton:(BLCPoiTableViewCell *)cell;
+
+@end
+
 
 @interface BLCPoiTableViewCell : UITableViewCell
 
+@property (nonatomic, strong) id <BLCPoiTableViewCellDelegate> delegate;
 
 
-+(CGFloat) heightForPointOfInterestCell:(BLCPointOfInterest *)point width:(CGFloat)width;
+@property (nonatomic, strong) UILabel *nameOfPlace;
+@property (nonatomic, strong) UILabel *notesAboutPlace;
+@property (nonatomic, strong) UILabel *howFarIsIt;
+@property (nonatomic, strong) BLCCategoryButton *categoryButton;
+@property (nonatomic, strong) id<MKAnnotation> customAnnotation;
+
+-(id)initForAnnotation:(id<MKAnnotation>)annotation;
 
 @end

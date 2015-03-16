@@ -9,7 +9,14 @@
 #import "BLCDataSource.h"
 
 
-@interface BLCDataSource ()
+@interface BLCDataSource () {
+    NSMutableArray *_annotations;
+    NSMutableArray *_categories;
+
+}
+@property (nonatomic, strong) NSArray *annotations;
+@property (nonatomic, strong) NSArray *categories;
+
 
 
 
@@ -31,91 +38,247 @@
 - (id)init {
     self = [super init];
     if (self) {
-        NSString *documentsDirectory = nil;
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        documentsDirectory = [paths objectAtIndex:0];
-        _path = [documentsDirectory stringByAppendingPathComponent:@"poi-path.dat"] ;
-        _categoryPath = [documentsDirectory stringByAppendingPathComponent:@"category-path.dat"];
-        NSLog(@"Saving annotations in %@", _path);
-        NSLog(@"Saving categories in %@", _categoryPath);
+
 
     }
     
+    
     return self;
 }
-- (void)loadPointsOfInterests {
-    _annotations = [NSKeyedUnarchiver unarchiveObjectWithFile:_path];
+\
+
+
+
+- (void)removeImage:(NSString *)fileName
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
+    NSError *error;
+    BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+    if (success) {
+        UIAlertView *removeSuccessFulAlert=[[UIAlertView alloc]initWithTitle:@"Congratulation:" message:@"Successfully removed" delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [removeSuccessFulAlert show];
+    }
+    else
+    {
+        NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
+    }
+}
+
+
+-(void) deleteCategories:(BLCCategories *)category
+{
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"categories"];
+    [mutableArrayWithKVO removeObject:category];
+    [self savingCategories];
+    
+}
+-(void)addCategories:(BLCCategories *)category
+{
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"categories"];
+    [mutableArrayWithKVO insertObject:category atIndex:0];
+    [self savingCategories];
+}
+
+-(void) deletePointOfInterest:(BLCPointOfInterest *)poi
+{
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"annotations"];
+    [mutableArrayWithKVO removeObject:poi];
+    [self savingAnnotations];
+    
+}
+-(void)addPoi:(BLCPointOfInterest *)poi
+{
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"annotations"];
+    [mutableArrayWithKVO insertObject:poi atIndex:0];
+    [self savingAnnotations];
+}
+
+-(void)toggleVisitedOnPOI:(BLCPointOfInterest *)poi
+{
+
+            if (poi.buttonState == BLCVisitButtonSelectedNO)
+            {
+                NSLog(@"BWFORE A: %i", poi.buttonState);
+
+                [poi setButtonState:BLCVisitButtonSelectedYES];
+                [self reloadAnnotation:poi];
+
+                [self savingAnnotations];
+
+                NSLog(@"AFTER A: %i", poi.buttonState);
+
+            }else {
+                NSLog(@"BEFORE B: %i", poi.buttonState);
+
+                [poi setButtonState:BLCVisitButtonSelectedNO];
+                [self reloadAnnotation:poi];
+
+                [self savingAnnotations];
+
+                NSLog(@"AFTER B: %i", poi.buttonState);
+            }
+    
+    
+    
+}
+
+-(void)reloadAnnotation:(BLCPointOfInterest *)poi
+{
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"annotations"];
+    NSUInteger index = [mutableArrayWithKVO indexOfObject:poi];
+    [mutableArrayWithKVO replaceObjectAtIndex:index withObject:poi];
+    
+}
+
+- (NSString *) pathForFilename:(NSString *) filename {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:filename];
+    return dataPath;
+}
+
+
+
+-(void)savingAnnotations
+{
+        // Write the changes to disk
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+          ;
+            _annotationsPath = [self pathForFilename:NSStringFromSelector(@selector(annotations))];
+            NSData *annotationData = [NSKeyedArchiver archivedDataWithRootObject:self.annotations];
+            
+            NSError *dataError;
+            BOOL wroteSuccessfully = [annotationData writeToFile:_annotationsPath options:NSDataWritingAtomic | NSDataWritingFileProtectionCompleteUnlessOpen error:&dataError];
+            
+            if (!wroteSuccessfully) {
+                NSLog(@"Couldn't write file: %@", dataError);
+            }
+        });
+
+}
+
+- (void)loadAnnotations {
+    _annotationsPath = [self pathForFilename:NSStringFromSelector(@selector(annotations))];
+    _annotations  = [NSKeyedUnarchiver unarchiveObjectWithFile:_annotationsPath];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSMutableArray *mutableAnnotations = [_annotations mutableCopy];
+        
+        [self willChangeValueForKey:@"annotations"];
+        self.annotations = mutableAnnotations;
+        [self didChangeValueForKey:@"annotations"];
+        
+        
+    });
     if (!_annotations) {
         _annotations = [NSMutableArray array];
     }
 }
 
--(void)loadCategories  {
-    _categories = [NSKeyedUnarchiver unarchiveObjectWithFile:_categoryPath];
-    if (!_categories){
-        _categories = [NSMutableArray array];
-    }
-}
 
--(NSArray *)annotations {
+- (NSArray *)annotations {
     if (!_annotations) {
-        [self loadPointsOfInterests];
+        [self loadAnnotations];
     }
     return _annotations;
 }
--(NSArray *)categories {
+
+-(void)loadCategories  {
+    _categoriesPath = [self pathForFilename:NSStringFromSelector(@selector(categories))];
+
+    _categories  = [NSKeyedUnarchiver unarchiveObjectWithFile:_categoriesPath];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSMutableArray *mutableCategories = [_categories mutableCopy];
+            
+            [self willChangeValueForKey:@"categories"];
+            self.categories = mutableCategories;
+            [self didChangeValueForKey:@"categories"];
+            
+        });
     if (!_categories){
+        _categories = [NSMutableArray array];
+        
+    }
+}
+
+-(NSArray *)categories
+{
+    if (!_categories) {
         [self loadCategories];
     }
     return _categories;
-    
 }
-// Adding objects methods
--(void)addPointOfInterest:(BLCPointOfInterest *)poi {
-        [self loadPointsOfInterests];
-        NSLog(@"Adding PointOfInterest: [name: %@] [description: %@] [custom annotation : %@] [category name: %@] [Category Color: %@]", poi.placeName, poi.notes, poi.customAnnotation, poi.category.categoryName, poi.category.color);
+
+-(void)savingCategories
+{
+    // Write the changes to disk
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ;
         
-        [_annotations addObject:poi];
-        [NSKeyedArchiver archiveRootObject:_annotations toFile:_path];
-        NSLog(@"ALL ANNOTATIONS = %@",_annotations);
+        NSString *fullPath = [self pathForFilename:NSStringFromSelector(@selector(categories))];
+        NSData *categoriesData = [NSKeyedArchiver archivedDataWithRootObject:self.categories];
+        
+        NSError *dataError;
+        BOOL wroteSuccessfully = [categoriesData writeToFile:fullPath options:NSDataWritingAtomic | NSDataWritingFileProtectionCompleteUnlessOpen error:&dataError];
+        
+        if (!wroteSuccessfully) {
+            NSLog(@"Couldn't write file: %@", dataError);
+        }
+    });
     
 }
 
--(void)addCategory:(BLCCategories *)categories {
-    [self loadCategories];
-    NSLog(@"Adding Category:[category name: %@] [Category Color: %@]", categories.categoryName, categories.color);
-    
-    [_categories addObject:categories];
-    [NSKeyedArchiver archiveRootObject:_categories toFile:_categoryPath];
-    NSLog(@"ALL CATEGORIES BEFORE= %@",_categories);
-    
+
+
+#pragma mark - Key/Value Observing
+
+- (NSUInteger) countOfAnnotations {
+    return self.annotations.count;
 }
 
-// deleting objects methods
-
--(void)removePointOfInterest:(BLCPointOfInterest *)poi
-{
-    [self loadPointsOfInterests];
-    
-    [_annotations removeObject:poi];
-    [NSKeyedArchiver archiveRootObject:_annotations toFile:_path];
-    
+- (id) objectInAnnotationsAtIndex:(NSUInteger)index {
+    return [self.annotations objectAtIndex:index];
 }
 
--(void)removeCategory:(BLCCategories *)category
-{
-    [self loadCategories];
-    
-    [_categories removeObject:category];
-    [NSKeyedArchiver archiveRootObject:_categories toFile:_categoryPath];
-    
+- (NSArray *) annotationsAtIndexes:(NSIndexSet *)indexes {
+    return [self.annotations objectsAtIndexes:indexes];
+}
+- (void) insertObject:(BLCPointOfInterest *)object inAnnotationsAtIndex:(NSUInteger)index {
+    [_annotations insertObject:object atIndex:index];
 }
 
--(void)addPointOfInterest:(BLCPointOfInterest *)poi ToArray:(BLCCategories *)categoryArray
-{
-    [categoryArray.pointsOfInterest addObject:poi];
-    NSLog(@"CATEGORY.POINTSOFINTEREST *** %@ ***", categoryArray);
-    
+- (void) removeObjectFromAnnotationsAtIndex:(NSUInteger)index {
+    [_annotations removeObjectAtIndex:index];
 }
 
+- (void) replaceObjectInAnnotationsAtIndex:(NSUInteger)index withObject:(id)object {
+    [_annotations replaceObjectAtIndex:index withObject:object];
+}
+
+// Categories
+- (NSUInteger) countOfCategories{
+    return self.categories.count;
+}
+
+- (id) objectInCategoriesAtIndex:(NSUInteger)index {
+    return [self.categories objectAtIndex:index];
+}
+
+- (NSArray *) categoriesAtIndexes:(NSIndexSet *)indexes {
+    return [self.annotations objectsAtIndexes:indexes];
+}
+- (void) insertObject:(BLCCategories *)object inCategoriesAtIndex:(NSUInteger)index {
+    [_categories insertObject:object atIndex:index];
+}
+
+- (void) removeObjectFromCategoriesAtIndex:(NSUInteger)index {
+    [_categories removeObjectAtIndex:index];
+}
+
+- (void) replaceObjectInCategoriesAtIndex:(NSUInteger)index withObject:(id)object {
+    [_categories replaceObjectAtIndex:index withObject:object];
+}
 @end

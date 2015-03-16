@@ -20,11 +20,8 @@
 @property (nonatomic, strong) NSLayoutConstraint *howFarIsItWidth;
 
 
-@property (nonatomic, strong) UILabel *nameOfPlace;
-@property (nonatomic, strong) UILabel *notesAboutPlace;
-@property (nonatomic, strong) UILabel *howFarIsIt;
 
-@property (nonatomic, strong) UIButton *categoryButton;
+
 
 // Image corresponding the arrow that makes clear that by touching the cell user will get taken to another screen
 @property (nonatomic, strong) UIImageView *arrowImage;
@@ -70,6 +67,16 @@ static UIColor *standardLetterCollors;
 }
 
 #pragma mark Initialization
+-(id)initForAnnotation:(id<MKAnnotation>)annotation
+{
+    self = [super init];
+    if (self)
+    {
+        self.customAnnotation = annotation;
+
+    }
+    return self;
+}
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -82,6 +89,7 @@ static UIColor *standardLetterCollors;
         [self addCategoryButton];
         [self addArrowImage];
         [self createConstraints];
+
         
     }
     
@@ -96,7 +104,6 @@ static UIColor *standardLetterCollors;
     self.nameOfPlace .numberOfLines  =0;
     [self.contentView addSubview: self.nameOfPlace ];
     self.nameOfPlace.translatesAutoresizingMaskIntoConstraints = NO;
-    self.nameOfPlace.attributedText = [self placeNameString];
 
 }
 
@@ -107,7 +114,6 @@ static UIColor *standardLetterCollors;
     [self.contentView addSubview: self.notesAboutPlace ];
     self.notesAboutPlace.translatesAutoresizingMaskIntoConstraints = NO;
     
-    self.notesAboutPlace.attributedText = [self notesAboutPlaceString];
 
     
 }
@@ -118,14 +124,12 @@ static UIColor *standardLetterCollors;
     [self.contentView addSubview: self.howFarIsIt ];
     self.howFarIsIt.translatesAutoresizingMaskIntoConstraints = NO;
     
-    self.howFarIsIt.attributedText = [self howFarIsItString];
 
 }
 
 // Category button going to be a Model button itself
 -(void)addCategoryButton {
-    self.categoryButton =  [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.categoryButton setImage:[UIImage imageNamed:@"heart"] forState:UIControlStateNormal];
+    self.categoryButton =  [[BLCCategoryButton alloc]init];
     [self.categoryButton addTarget:self action:@selector(categoryButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.categoryButton];
     self.categoryButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -139,51 +143,6 @@ static UIColor *standardLetterCollors;
     [self.contentView addSubview:self.arrowImage];
     self.arrowImage.translatesAutoresizingMaskIntoConstraints = NO;
 
-}
-
-#pragma mark Attributed Strings 
-
--(NSAttributedString *)placeNameString {
-    
-    CGFloat placeNameFontSize = 18;
-    
-    NSString *baseString = @"Picanha Grill Sao Paulo";
-
-
-    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]}];
-    NSRange stringRange = [baseString rangeOfString:baseString];
-    [mutAttString addAttribute:NSForegroundColorAttributeName value:standardLetterCollors range:stringRange];
-    return mutAttString;
-    
-}
-
-
--(NSAttributedString *)notesAboutPlaceString {
-    
-    CGFloat notesPlaceFontSize = 15;
-    
-    NSString *baseString = @"pretty cool place  apparently Mr Fulano told that I should come and check out, maybe let me know when I am around";
-    
-    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleBody] }];
-    NSRange stringRange = [baseString rangeOfString:baseString];
-    [mutAttString addAttribute:NSForegroundColorAttributeName value:standardLetterCollors range:stringRange];
-    
-    return mutAttString;
-    
-}
-
-
--(NSAttributedString *)howFarIsItString {
-    CGFloat fontSize = 11;
-    
-    NSString *baseString = @"< 1 min.";
-    
-    NSMutableAttributedString *mutAttString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName :[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1] }];
-    NSRange stringRange = [baseString rangeOfString:baseString];
-    [mutAttString addAttribute:NSForegroundColorAttributeName value:standardLetterCollors range:stringRange];
-    
-    return mutAttString;
-    
 }
 
 
@@ -275,8 +234,11 @@ static UIColor *standardLetterCollors;
     self.howFarIsItWidth.constant = howFarIsItLabelSize.width ;
 }
 
-
-
+#pragma mark UIButton Actions
+-(void)categoryButtonPressed:(UIButton *)sender
+{
+    [self.delegate cellDidPressOnButton:self];
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

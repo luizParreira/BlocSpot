@@ -20,6 +20,7 @@
 @property (nonatomic, assign) CGFloat longitude;
 @property (nonatomic, strong) UIColor *backgroundColor;
 
+@property (nonatomic, copy, readwrite) NSString *title;
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 

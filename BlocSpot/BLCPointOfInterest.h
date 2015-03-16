@@ -11,13 +11,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import "BLCCustomAnnotation.h"
 #import "BLCCategories.h"
+#import "BLCCategoryButton.h"
 
 
 
-typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
-    PAPointOfInterestDidNotVisit  = 0,
-    PAPointOfInterestDidVisit     = 1,
-};
 
 @interface BLCPointOfInterest : NSObject <NSCoding>
 
@@ -27,11 +24,12 @@ typedef NS_ENUM(NSInteger, PAPointOfInterestVisitedState) {
 @property (nonatomic, assign) CLLocation * location;
 @property (nonatomic, strong) BLCCustomAnnotation *customAnnotation;
 
+@property (nonatomic, strong) NSString *visited;
 //@property (nonatomic, strong) NSMutableArray *categoriesCreatedArray;
 
 
-
-@property (nonatomic, assign) PAPointOfInterestVisitedState visitState;
+@property (nonatomic, assign) BOOL userHasVisited;
+@property (nonatomic, assign) BLCVisitButtonSelected buttonState;
 
 -(instancetype) initWithDictionary:(NSDictionary *)mediaDictionary;
 

@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, BLCCategoriesTableViewControllerState) {
 @class BLCCategoriesTableViewController, BLCCategories;
 @protocol BLCCategoriesTableViewControllerDelegate <NSObject>
 
--(void)controllerWillSendCategoryObjectWithDictionary:(NSDictionary *)dic;
+-(void)controllerWillSendCategoryObjectWithDictionary:(NSMutableDictionary *)dic;
 
 -(void)controllerDidDismiss:(BLCCategoriesTableViewController *)controller;
 -(void)category:(BLCCategories *)categoriesChosen;
