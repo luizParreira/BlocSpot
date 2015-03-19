@@ -16,13 +16,10 @@ typedef NS_ENUM(NSInteger, BLCCategoriesTableViewControllerState) {
 @class BLCCategoriesTableViewController, BLCCategories;
 @protocol BLCCategoriesTableViewControllerDelegate <NSObject>
 
--(void)controllerWillSendCategoryObjectWithDictionary:(NSMutableDictionary *)dic;
 
 -(void)controllerDidDismiss:(BLCCategoriesTableViewController *)controller;
--(void)category:(BLCCategories *)categoriesChosen;
+-(void)category:(BLCCategories *)categories;
 
-
--(void)didCreateCategory:(BLCCategories *)category ;
 @end
 @interface BLCCategoriesTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource >
 

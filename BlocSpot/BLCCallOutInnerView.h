@@ -19,6 +19,11 @@
 
 -(void)calloutView:(BLCCallOutInnerView *)view didPressVisitedButton:(BLCCategoryButton *)button ;
 
+-(void)calloutViewdidPressDeleteButton:(BLCCallOutInnerView *)view;
+-(void)calloutViewdidPressShareButton:(BLCCallOutInnerView *)view;
+-(void)calloutViewdidPressMapDirectionsButton:(BLCCallOutInnerView *)view;
+
+
 @end
 
 @interface BLCCallOutInnerView : UIView

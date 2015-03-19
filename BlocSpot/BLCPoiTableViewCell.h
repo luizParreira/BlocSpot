@@ -24,13 +24,10 @@
 
 @property (nonatomic, strong) id <BLCPoiTableViewCellDelegate> delegate;
 
-
-@property (nonatomic, strong) UILabel *nameOfPlace;
-@property (nonatomic, strong) UILabel *notesAboutPlace;
 @property (nonatomic, strong) UILabel *howFarIsIt;
-@property (nonatomic, strong) BLCCategoryButton *categoryButton;
-@property (nonatomic, strong) id<MKAnnotation> customAnnotation;
 
--(id)initForAnnotation:(id<MKAnnotation>)annotation;
+
+@property (nonatomic, strong) BLCCategoryButton *categoryButton;
+@property (nonatomic, strong) BLCPointOfInterest *poi;
 
 @end

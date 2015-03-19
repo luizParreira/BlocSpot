@@ -7,18 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5811643B1AA2577200D2D596 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */; };
 		582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582724CC1AA1042A0073BE00 /* SMCalloutView.m */; };
 		582792D11AB5053600315F18 /* BLCCategoryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 582792D01AB5053600315F18 /* BLCCategoryButton.m */; };
 		582D39CE1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */; };
 		582D39D11AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 582D39D01AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m */; };
 		5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */; };
-		5830C0A31A9F808C00E41895 /* TLTagsControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A21A9F808C00E41895 /* TLTagsControl.m */; };
-		5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A51A9FB45100E41895 /* FPPopoverController.m */; };
-		5830C0AA1A9FB4FC00E41895 /* FPTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0A91A9FB4FC00E41895 /* FPTouchView.m */; };
-		5830C0AD1A9FB50B00E41895 /* FPPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5830C0AC1A9FB50B00E41895 /* FPPopoverView.m */; };
 		585E4FF31A9BC4E800E60C32 /* BLCDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 585E4FF21A9BC4E800E60C32 /* BLCDataSource.m */; };
 		585F0F941AA7B61900FADFD6 /* BLCColorsCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585F0F931AA7B61900FADFD6 /* BLCColorsCollectionCell.m */; };
+		5878AEA41AB7FC090062EADB /* BLCSearchResultsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5878AEA31AB7FC090062EADB /* BLCSearchResultsTableController.m */; };
 		5889BA871A9ECCBD00B97A27 /* BLCCustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5889BA861A9ECCBD00B97A27 /* BLCCustomAnnotation.m */; };
 		5891B7E11AAD3D43005D4046 /* BLCCustomCallOutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5891B7E01AAD3D43005D4046 /* BLCCustomCallOutView.m */; };
 		58A536701A9A99F500113151 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A5366F1A9A99F500113151 /* main.m */; };
@@ -32,8 +28,7 @@
 		58CECAF71A9B764900BFC2C0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CECAF61A9B764900BFC2C0 /* MapKit.framework */; };
 		58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CECAF91A9B771500BFC2C0 /* BLCMapViewController.m */; };
 		58E11EBE1AB33C8600DB6891 /* BLCCallOutInnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E11EBD1AB33C8600DB6891 /* BLCCallOutInnerView.m */; };
-		58E11EC11AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E11EC01AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m */; };
-		58F4174B1A9CF6F80087ED2A /* BLCSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4174A1A9CF6F80087ED2A /* BLCSearch.m */; };
+		58E7D2B01AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E7D2AF1AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.m */; };
 		58F4174E1A9CF7110087ED2A /* BLCCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F4174D1A9CF7110087ED2A /* BLCCategories.m */; };
 		58F417511A9CF7A70087ED2A /* BLCPoiTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F417501A9CF7A70087ED2A /* BLCPoiTableViewController.m */; };
 		58F417541A9CF8050087ED2A /* BLCPointOfInterest.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F417531A9CF8050087ED2A /* BLCPointOfInterest.m */; };
@@ -55,8 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		581164391AA2577200D2D596 /* CustomIOS7AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOS7AlertView.h; sourceTree = "<group>"; };
-		5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 		582724CB1AA1042A0073BE00 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCalloutView.h; sourceTree = "<group>"; };
 		582724CC1AA1042A0073BE00 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
 		582792CF1AB5053600315F18 /* BLCCategoryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategoryButton.h; sourceTree = "<group>"; };
@@ -67,19 +60,12 @@
 		582D39D01AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategoryTaleViewCell.m; sourceTree = "<group>"; };
 		5830C09B1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCreateAnnotationsView.h; sourceTree = "<group>"; };
 		5830C09C1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomCreateAnnotationsView.m; sourceTree = "<group>"; };
-		5830C0A11A9F808C00E41895 /* TLTagsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLTagsControl.h; sourceTree = "<group>"; };
-		5830C0A21A9F808C00E41895 /* TLTagsControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLTagsControl.m; sourceTree = "<group>"; };
-		5830C0A41A9FB45100E41895 /* FPPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPPopoverController.h; sourceTree = "<group>"; };
-		5830C0A51A9FB45100E41895 /* FPPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPPopoverController.m; sourceTree = "<group>"; };
-		5830C0A71A9FB4E100E41895 /* ARCMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCMacros.h; sourceTree = "<group>"; };
-		5830C0A81A9FB4FC00E41895 /* FPTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPTouchView.h; sourceTree = "<group>"; };
-		5830C0A91A9FB4FC00E41895 /* FPTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPTouchView.m; sourceTree = "<group>"; };
-		5830C0AB1A9FB50B00E41895 /* FPPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPPopoverView.h; sourceTree = "<group>"; };
-		5830C0AC1A9FB50B00E41895 /* FPPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPPopoverView.m; sourceTree = "<group>"; };
 		585E4FF11A9BC4E800E60C32 /* BLCDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCDataSource.h; sourceTree = "<group>"; };
 		585E4FF21A9BC4E800E60C32 /* BLCDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCDataSource.m; sourceTree = "<group>"; };
 		585F0F921AA7B61900FADFD6 /* BLCColorsCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCColorsCollectionCell.h; sourceTree = "<group>"; };
 		585F0F931AA7B61900FADFD6 /* BLCColorsCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCColorsCollectionCell.m; sourceTree = "<group>"; };
+		5878AEA21AB7FC090062EADB /* BLCSearchResultsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCSearchResultsTableController.h; sourceTree = "<group>"; };
+		5878AEA31AB7FC090062EADB /* BLCSearchResultsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCSearchResultsTableController.m; sourceTree = "<group>"; };
 		5889BA851A9ECCBD00B97A27 /* BLCCustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomAnnotation.h; sourceTree = "<group>"; };
 		5889BA861A9ECCBD00B97A27 /* BLCCustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomAnnotation.m; sourceTree = "<group>"; };
 		5891B7DF1AAD3D43005D4046 /* BLCCustomCallOutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCallOutView.h; sourceTree = "<group>"; };
@@ -102,10 +88,8 @@
 		58CECAF91A9B771500BFC2C0 /* BLCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCMapViewController.m; sourceTree = "<group>"; };
 		58E11EBC1AB33C8600DB6891 /* BLCCallOutInnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCallOutInnerView.h; sourceTree = "<group>"; };
 		58E11EBD1AB33C8600DB6891 /* BLCCallOutInnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCallOutInnerView.m; sourceTree = "<group>"; };
-		58E11EBF1AB3472E00DB6891 /* BLCCustomCallOutAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCustomCallOutAnnotation.h; sourceTree = "<group>"; };
-		58E11EC01AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCustomCallOutAnnotation.m; sourceTree = "<group>"; };
-		58F417491A9CF6F80087ED2A /* BLCSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCSearch.h; sourceTree = "<group>"; };
-		58F4174A1A9CF6F80087ED2A /* BLCSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCSearch.m; sourceTree = "<group>"; };
+		58E7D2AE1AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCPopUpCategoriesViewController.h; sourceTree = "<group>"; };
+		58E7D2AF1AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCPopUpCategoriesViewController.m; sourceTree = "<group>"; };
 		58F4174C1A9CF7110087ED2A /* BLCCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCCategories.h; sourceTree = "<group>"; };
 		58F4174D1A9CF7110087ED2A /* BLCCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCCategories.m; sourceTree = "<group>"; };
 		58F4174F1A9CF7A70087ED2A /* BLCPoiTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCPoiTableViewController.h; sourceTree = "<group>"; };
@@ -219,14 +203,10 @@
 				585E4FF21A9BC4E800E60C32 /* BLCDataSource.m */,
 				58F417521A9CF8050087ED2A /* BLCPointOfInterest.h */,
 				58F417531A9CF8050087ED2A /* BLCPointOfInterest.m */,
-				58F417491A9CF6F80087ED2A /* BLCSearch.h */,
-				58F4174A1A9CF6F80087ED2A /* BLCSearch.m */,
 				58F4174C1A9CF7110087ED2A /* BLCCategories.h */,
 				58F4174D1A9CF7110087ED2A /* BLCCategories.m */,
 				5889BA851A9ECCBD00B97A27 /* BLCCustomAnnotation.h */,
 				5889BA861A9ECCBD00B97A27 /* BLCCustomAnnotation.m */,
-				58E11EBF1AB3472E00DB6891 /* BLCCustomCallOutAnnotation.h */,
-				58E11EC01AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -259,6 +239,10 @@
 				58CECAF91A9B771500BFC2C0 /* BLCMapViewController.m */,
 				58F4174F1A9CF7A70087ED2A /* BLCPoiTableViewController.h */,
 				58F417501A9CF7A70087ED2A /* BLCPoiTableViewController.m */,
+				58E7D2AE1AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.h */,
+				58E7D2AF1AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.m */,
+				5878AEA21AB7FC090062EADB /* BLCSearchResultsTableController.h */,
+				5878AEA31AB7FC090062EADB /* BLCSearchResultsTableController.m */,
 				582D39CC1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.h */,
 				582D39CD1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m */,
 			);
@@ -275,19 +259,8 @@
 		58CECAED1A9B72C000BFC2C0 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				5830C0A11A9F808C00E41895 /* TLTagsControl.h */,
-				5830C0A21A9F808C00E41895 /* TLTagsControl.m */,
-				5830C0A41A9FB45100E41895 /* FPPopoverController.h */,
-				5830C0A51A9FB45100E41895 /* FPPopoverController.m */,
-				5830C0AB1A9FB50B00E41895 /* FPPopoverView.h */,
-				5830C0AC1A9FB50B00E41895 /* FPPopoverView.m */,
-				5830C0A71A9FB4E100E41895 /* ARCMacros.h */,
-				5830C0A81A9FB4FC00E41895 /* FPTouchView.h */,
-				5830C0A91A9FB4FC00E41895 /* FPTouchView.m */,
 				582724CB1AA1042A0073BE00 /* SMCalloutView.h */,
 				582724CC1AA1042A0073BE00 /* SMCalloutView.m */,
-				581164391AA2577200D2D596 /* CustomIOS7AlertView.h */,
-				5811643A1AA2577200D2D596 /* CustomIOS7AlertView.m */,
 				58FE8D281AA371AB007E54DC /* JVFloatLabeledTextField.h */,
 				58FE8D291AA371AB007E54DC /* JVFloatLabeledTextField.m */,
 				58FE8D2A1AA371AB007E54DC /* JVFloatLabeledTextView.h */,
@@ -468,26 +441,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5830C0A31A9F808C00E41895 /* TLTagsControl.m in Sources */,
 				5889BA871A9ECCBD00B97A27 /* BLCCustomAnnotation.m in Sources */,
-				58F4174B1A9CF6F80087ED2A /* BLCSearch.m in Sources */,
 				585F0F941AA7B61900FADFD6 /* BLCColorsCollectionCell.m in Sources */,
 				5891B7E11AAD3D43005D4046 /* BLCCustomCallOutView.m in Sources */,
 				58F417511A9CF7A70087ED2A /* BLCPoiTableViewController.m in Sources */,
-				5830C0AA1A9FB4FC00E41895 /* FPTouchView.m in Sources */,
 				5830C09D1A9F6A4D00E41895 /* BLCCustomCreateAnnotationsView.m in Sources */,
-				5811643B1AA2577200D2D596 /* CustomIOS7AlertView.m in Sources */,
-				5830C0AD1A9FB50B00E41895 /* FPPopoverView.m in Sources */,
 				58FE8D2E1AA371AB007E54DC /* JVFloatLabeledTextField.m in Sources */,
 				58FE8D2F1AA371AB007E54DC /* JVFloatLabeledTextView.m in Sources */,
 				582724CD1AA1042A0073BE00 /* SMCalloutView.m in Sources */,
-				5830C0A61A9FB45100E41895 /* FPPopoverController.m in Sources */,
+				58E7D2B01AB87FE9009A6E1B /* BLCPopUpCategoriesViewController.m in Sources */,
 				582792D11AB5053600315F18 /* BLCCategoryButton.m in Sources */,
 				58E11EBE1AB33C8600DB6891 /* BLCCallOutInnerView.m in Sources */,
 				58A536731A9A99F500113151 /* AppDelegate.m in Sources */,
 				58CECAFA1A9B771500BFC2C0 /* BLCMapViewController.m in Sources */,
 				58F417571A9CF9B70087ED2A /* BLCPoiTableViewCell.m in Sources */,
-				58E11EC11AB3472E00DB6891 /* BLCCustomCallOutAnnotation.m in Sources */,
 				582D39CE1AA60C7A00BEFAC4 /* BLCCategoriesTableViewController.m in Sources */,
 				582D39D11AA61EED00BEFAC4 /* BLCCategoryTaleViewCell.m in Sources */,
 				58FE8D301AA371AB007E54DC /* NSString+TextDirectionality.m in Sources */,
@@ -495,6 +462,7 @@
 				58F417541A9CF8050087ED2A /* BLCPointOfInterest.m in Sources */,
 				58A536701A9A99F500113151 /* main.m in Sources */,
 				58F4174E1A9CF7110087ED2A /* BLCCategories.m in Sources */,
+				5878AEA41AB7FC090062EADB /* BLCSearchResultsTableController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

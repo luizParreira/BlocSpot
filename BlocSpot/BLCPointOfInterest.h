@@ -21,13 +21,7 @@
 @property (nonatomic, strong) BLCCategories *category;
 @property (nonatomic, strong) NSString *placeName;
 @property (nonatomic, strong) NSString *notes;
-@property (nonatomic, assign) CLLocation * location;
 @property (nonatomic, strong) BLCCustomAnnotation *customAnnotation;
-
-@property (nonatomic, strong) NSString *visited;
-//@property (nonatomic, strong) NSMutableArray *categoriesCreatedArray;
-
-
 @property (nonatomic, assign) BOOL userHasVisited;
 @property (nonatomic, assign) BLCVisitButtonSelected buttonState;
 

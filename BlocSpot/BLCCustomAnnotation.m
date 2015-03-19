@@ -19,8 +19,6 @@
         self.coordinate = coordinate;
         self.latitude = self.coordinate.latitude;
         self.longitude = self.coordinate.longitude;
-//        self.backgroundColor = color;
-        self.title = @"TEST";
         
     }
     return self;
@@ -34,7 +32,6 @@
     {
         self.latitude = [aDecoder decodeFloatForKey:@"latitude"];
         self.longitude = [aDecoder decodeFloatForKey:@"longitude"];
-//        self.backgroundColor = [aDecoder decodeObjectForKey:@"backgroundColor"];
 
     }
     return self;
@@ -44,7 +41,6 @@
 {
     [aCoder encodeFloat:self.latitude forKey:@"latitude"];
     [aCoder encodeFloat:self.longitude forKey:@"longitude"];
-//    [aCoder encodeObject:self.backgroundColor forKey:@"backgroundColor"];
     
 }
 @end

@@ -17,6 +17,7 @@ typedef void (^BLCSearchListCompletionBlock)(NSArray *places, NSError *error);
 @interface BLCDataSource : NSObject {
     NSString *_annotationsPath;
     NSString *_categoriesPath;
+    NSString *_distanceValuesPath;
 }
 
 +(instancetype) sharedInstance;
@@ -24,7 +25,7 @@ typedef void (^BLCSearchListCompletionBlock)(NSArray *places, NSError *error);
 
 @property (nonatomic, weak, readonly) NSArray *annotations;
 @property (nonatomic, weak, readonly) NSArray *categories;
-
+@property (nonatomic, weak, readonly) NSDictionary *distanceValuesDic;
 
 
 // To be implemented on the data regarding the list of venues
@@ -40,6 +41,7 @@ typedef void (^BLCSearchListCompletionBlock)(NSArray *places, NSError *error);
 -(void)replaceAnnotation:(BLCPointOfInterest *)poi withOtherPOI:(BLCPointOfInterest *)otherPOI;
 
 -(void)toggleVisitedOnPOI:(BLCPointOfInterest *)poi;
-
+-(void)addPoi:(BLCPointOfInterest *)poi toCategoryArray:(BLCCategories *)category;
+-(void)addDictionary:(NSDictionary *)dic;
 
 @end

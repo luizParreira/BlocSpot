@@ -9,18 +9,22 @@
 #import "BLCDataSource.h"
 
 
-@interface BLCDataSource () {
+@interface BLCDataSource (){
     NSMutableArray *_annotations;
     NSMutableArray *_categories;
+    NSMutableDictionary *_distanceValuesDic;
+
 
 }
 @property (nonatomic, strong) NSArray *annotations;
 @property (nonatomic, strong) NSArray *categories;
 
+@property (nonatomic, strong) NSDictionary *distanceValuesDic;
 
 
 
 @end
+
 
 @implementation BLCDataSource 
 
@@ -41,12 +45,8 @@
 
 
     }
-    
-    
     return self;
 }
-\
-
 
 
 - (void)removeImage:(NSString *)fileName
@@ -67,7 +67,12 @@
     }
 }
 
+-(void)addDictionary:(NSDictionary *)dic
+{
+    _distanceValuesDic =[NSMutableDictionary dictionaryWithDictionary:dic];
 
+    
+}
 -(void) deleteCategories:(BLCCategories *)category
 {
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"categories"];
@@ -79,14 +84,17 @@
 {
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"categories"];
     [mutableArrayWithKVO insertObject:category atIndex:0];
+
     [self savingCategories];
 }
 
 -(void) deletePointOfInterest:(BLCPointOfInterest *)poi
 {
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"annotations"];
+//    [poi.category.pointsOfInterest removeObject:poi];
     [mutableArrayWithKVO removeObject:poi];
     [self savingAnnotations];
+//    [self savingCategories];
     
 }
 -(void)addPoi:(BLCPointOfInterest *)poi
@@ -96,29 +104,42 @@
     [self savingAnnotations];
 }
 
+-(void)addPoi:(BLCPointOfInterest *)poi toCategoryArray:(BLCCategories *)category
+{
+
+    [category.pointsOfInterest addObject:poi];
+    [self savingCategories];
+    [self reloadCategories:category];
+    
+    
+}
+-(void)reloadCategories:(BLCCategories *)category
+{
+    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"categories"];
+    NSUInteger index = [mutableArrayWithKVO indexOfObject:category];
+    [mutableArrayWithKVO replaceObjectAtIndex:index withObject:category];
+    
+}
+
 -(void)toggleVisitedOnPOI:(BLCPointOfInterest *)poi
 {
 
             if (poi.buttonState == BLCVisitButtonSelectedNO)
             {
-                NSLog(@"BWFORE A: %i", poi.buttonState);
 
                 [poi setButtonState:BLCVisitButtonSelectedYES];
                 [self reloadAnnotation:poi];
 
                 [self savingAnnotations];
 
-                NSLog(@"AFTER A: %i", poi.buttonState);
 
             }else {
-                NSLog(@"BEFORE B: %i", poi.buttonState);
 
                 [poi setButtonState:BLCVisitButtonSelectedNO];
                 [self reloadAnnotation:poi];
 
                 [self savingAnnotations];
 
-                NSLog(@"AFTER B: %i", poi.buttonState);
             }
     
     
@@ -156,6 +177,7 @@
             if (!wroteSuccessfully) {
                 NSLog(@"Couldn't write file: %@", dataError);
             }
+
         });
 
 }

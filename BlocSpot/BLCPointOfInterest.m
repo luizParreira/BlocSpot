@@ -20,11 +20,8 @@
         self.notes = pointDictionary[@"notes"];
         self.category = pointDictionary[@"category"];
         self.customAnnotation = pointDictionary[@"annotation"];
-//        self.categoriesCreatedArray = pointDictionary[@"categoriesCreatedArray"];
-//        self.visited = pointDictionary[@"visited"];
-//        self.userHasVisited = [pointDictionary[@"user_has_visited"] boolValue];
+
         self.buttonState = self.userHasVisited ? BLCVisitButtonSelectedYES : BLCVisitButtonSelectedNO;
-        NSLog(@"pointDictionary =%@", pointDictionary);
         
     }
     return self;
@@ -42,10 +39,8 @@
         self.notes = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(notes))];
         self.category = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(category))];
         self.customAnnotation = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(customAnnotation))];
-        self.visited = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(visited))];
-//        self.userHasVisited = [aDecoder decodeBoolForKey:@"user_has_visited"];
+ 
         self.buttonState = [aDecoder decodeIntegerForKey:NSStringFromSelector(@selector(buttonState))];
-//        self.categoriesCreatedArray = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(categoriesCreatedArray))];
     
     }
     return self;
@@ -56,11 +51,9 @@
     [aCoder encodeObject:self.notes forKey:NSStringFromSelector(@selector(notes))];
     [aCoder encodeObject:self.category forKey:NSStringFromSelector(@selector(category))];
     [aCoder encodeObject:self.customAnnotation forKey:NSStringFromSelector(@selector(customAnnotation))];
-//    [aCoder encodeObject:self.visited forKey:NSStringFromSelector(@selector(visited))];
-//    [aCoder encodeBool:self.userHasVisited forKey:@"user_has_visited"];
+
     [aCoder encodeInteger:self.buttonState forKey:NSStringFromSelector(@selector(buttonState))];
 
-//    [aCoder encodeObject:self.categoriesCreatedArray forKey:NSStringFromSelector(@selector(categoriesCreatedArray))];
 }
 
 @end

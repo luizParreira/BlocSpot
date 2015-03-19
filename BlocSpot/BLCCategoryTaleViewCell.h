@@ -14,16 +14,10 @@ typedef NS_ENUM(NSInteger, BLCCategoryTaleViewCellState) {
     BLCCategoryTaleViewCellStateSelectedYES,
     BLCCategoryTaleViewCellStateUnSelectedNOT
 };
-@class BLCCategoryTaleViewCell;
-@protocol BLCCategoryTaleViewCellDelegate <NSObject>
-
--(void)didSelectCellWithView:(UIView *)contentView;
 
 
-@end
 @interface BLCCategoryTaleViewCell : UITableViewCell
 
-@property (nonatomic, assign) id<BLCCategoryTaleViewCellDelegate> delegate;
 
 @property (nonatomic, assign) BLCCategoryTaleViewCellState state;
 @property (nonatomic, strong) UILabel *categoryLabel;

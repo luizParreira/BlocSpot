@@ -24,7 +24,7 @@
         
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         
-        self.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+        self.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
         self.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
         
         self.vistButtonState = BLCVisitButtonSelectedNO;
@@ -41,13 +41,11 @@
     NSString *imageName;
     switch (_vistButtonState) {
         case BLCVisitButtonSelectedNO:
-            NSLog(@"BLC BUTTON STATE 'NO' TOGGLED");
 //            [self.imageView removeFromSuperview];
             imageName = @"heart";
 
             break;
         case BLCVisitButtonSelectedYES:
-            NSLog(@"BLC BUTTON STATE 'YES' TOGGLED");\
             imageName = @"heart_outlined";
             
 

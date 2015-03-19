@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class BLCPoiTableViewController, BLCPointOfInterest ;
+@protocol  BLCPoiTableViewControllerDelegate <NSObject>
 
-@interface BLCPoiTableViewController : UITableViewController
+
+-(void)didSelectPOI:(BLCPointOfInterest *)poi;
+@end
+@interface BLCPoiTableViewController : UITableViewController 
+
+@property (nonatomic, weak) id <BLCPoiTableViewControllerDelegate> tableDelegate;
+
 
 @end

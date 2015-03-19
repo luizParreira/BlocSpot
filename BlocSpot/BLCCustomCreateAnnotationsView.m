@@ -18,7 +18,7 @@
 
 
 
-@interface BLCCustomCreateAnnotationsView () <UITextFieldDelegate, UITextViewDelegate, BLCCategoryTaleViewCellDelegate  >
+@interface BLCCustomCreateAnnotationsView () <UITextFieldDelegate, UITextViewDelegate  >
 
 @property (nonatomic, strong) UIView *topView;
 

@@ -15,12 +15,9 @@
 @interface BLCCustomAnnotation : NSObject <MKAnnotation, NSCoding>
     
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-@property (nonatomic, strong) NSArray *array;
 @property (nonatomic, assign) CGFloat latitude;
 @property (nonatomic, assign) CGFloat longitude;
-@property (nonatomic, strong) UIColor *backgroundColor;
 
-@property (nonatomic, copy, readwrite) NSString *title;
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 
